@@ -82,8 +82,6 @@ class RundownService
             ];
         });
 
-        $route = $this->generateRoutePath($rundown->places);
-
         return [
             'rundown' => [
                 'id' => $rundown->id,
@@ -92,59 +90,8 @@ class RundownService
                 'status' => $rundown->status,
             ],
             'places' => $places,
-            'route' => $route,
             'center' => $this->calculateMapCenter($rundown->places),
         ];
-    }
-
-    private function generateRoutePath(Collection $places): array
-    {
-        if ($places->count() < 2) {
-            return [];
-        }
-
-        $route = [];
-        $placesArray = $places->toArray();
-
-        for ($i = 0; $i < count($placesArray) - 1; $i++) {
-            $current = $placesArray[$i];
-            $next = $placesArray[$i + 1];
-
-            $route[] = [
-                'from' => [
-                    'lat' => $current['latitude'],
-                    'lng' => $current['longitude'],
-                ],
-                'to' => [
-                    'lat' => $next['latitude'],
-                    'lng' => $next['longitude'],
-                ],
-                'distance' => $this->calculateDistance(
-                    $current['latitude'],
-                    $current['longitude'],
-                    $next['latitude'],
-                    $next['longitude']
-                ),
-            ];
-        }
-
-        return $route;
-    }
-
-    private function calculateDistance(float $lat1, float $lng1, float $lat2, float $lng2): float
-    {
-        $earthRadius = 6371; // Radius in kilometers
-
-        $dLat = deg2rad($lat2 - $lat1);
-        $dLng = deg2rad($lng2 - $lng1);
-
-        $a = sin($dLat / 2) * sin($dLat / 2) +
-             cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
-             sin($dLng / 2) * sin($dLng / 2);
-
-        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-
-        return $earthRadius * $c;
     }
 
     private function calculateMapCenter(Collection $places): array

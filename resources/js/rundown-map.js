@@ -7,7 +7,7 @@
 
 let map = null;
 let markers = [];
-let routeLines = [];
+let routingControl = null;
 
 /**
  * Initializes the Leaflet map on the page.
@@ -51,7 +51,7 @@ function loadRundownMapData(rundownId) {
         .then(data => {
             if (data.places && data.places.length > 0) {
                 displayPlacesOnMap(data.places);
-                drawRoute(data.route);
+                drawRoute(data.places);
                 if (data.center) {
                     map.setView([data.center.lat, data.center.lng], 13);
                 }
@@ -107,27 +107,29 @@ function displayPlacesOnMap(places) {
 
 /**
  * Draws the route between places on the map.
- * @param {Array} route - An array of route segment objects.
+ * @param {Array} places - An array of place objects.
  */
-function drawRoute(route) {
-    clearRouteLines();
+function drawRoute(places) {
+    clearRoute();
 
-    if (!route || route.length === 0) {
+    if (!places || places.length < 2) {
         return;
     }
 
-    const latlngs = route.map(segment => [
-        [parseFloat(segment.from.lat), parseFloat(segment.from.lng)],
-        [parseFloat(segment.to.lat), parseFloat(segment.to.lng)]
-    ]).flat();
+    const waypoints = places.map(place =>
+        L.latLng(parseFloat(place.latitude), parseFloat(place.longitude))
+    );
 
-    const polyline = L.polyline(latlngs, {
-        color: '#4F46E5',
-        weight: 4,
-        opacity: 0.8
+    routingControl = L.Routing.control({
+        waypoints: waypoints,
+        routeWhileDragging: true,
+        show: false, // Hide the default instructions panel
+        addWaypoints: false, // Prevent adding new waypoints by clicking
+        createMarker: function() { return null; }, // Do not create start/end markers
+        lineOptions: {
+            styles: [{ color: '#4F46E5', opacity: 0.8, weight: 4 }]
+        }
     }).addTo(map);
-
-    routeLines.push(polyline);
 }
 
 /**
@@ -139,11 +141,13 @@ function clearMarkers() {
 }
 
 /**
- * Clears all route lines from the map.
+ * Clears the route from the map.
  */
-function clearRouteLines() {
-    routeLines.forEach(line => map.removeLayer(line));
-    routeLines = [];
+function clearRoute() {
+    if (routingControl) {
+        map.removeControl(routingControl);
+        routingControl = null;
+    }
 }
 
 /**
@@ -151,7 +155,7 @@ function clearRouteLines() {
  */
 function clearMap() {
     clearMarkers();
-    clearRouteLines();
+    clearRoute();
 }
 
 /**

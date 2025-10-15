@@ -4,20 +4,20 @@ namespace App\Features\EventPlanning\Services;
 
 use App\Features\EventPlanning\Models\Activity;
 use App\Features\EventPlanning\Repositories\Contracts\ActivityRepositoryInterface;
-use App\Features\Location\Repositories\Contracts\PlaceRepositoryInterface;
+use App\Features\Location\Services\PlaceService;
 use Illuminate\Database\Eloquent\Collection;
 
 class ActivityService
 {
     protected ActivityRepositoryInterface $activityRepository;
-    protected PlaceRepositoryInterface $placeRepository;
+    protected PlaceService $placeService;
 
     public function __construct(
         ActivityRepositoryInterface $activityRepository,
-        PlaceRepositoryInterface $placeRepository
+        PlaceService $placeService
     ) {
         $this->activityRepository = $activityRepository;
-        $this->placeRepository = $placeRepository;
+        $this->placeService = $placeService;
     }
 
     public function getActivitiesByRundown(int $rundownId): Collection
@@ -58,7 +58,8 @@ class ActivityService
 
     public function getAvailablePlaces(string $search = ''): Collection
     {
-        return $this->placeRepository->search($search, 50);
+        // TODO: search is not implemented in placeService
+        return $this->placeService->getAllActivePlacesList();
     }
 
     public function getActivityTimeline(int $rundownId): array

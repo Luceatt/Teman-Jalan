@@ -70,7 +70,7 @@ class Activity extends Model
     /**
      * Get the duration in minutes.
      */
-    public function getDurationInMinutesAttribute(): int
+    public function getDurationInMinutes(): int
     {
         if (!$this->start_time || !$this->end_time) {
             return 0;

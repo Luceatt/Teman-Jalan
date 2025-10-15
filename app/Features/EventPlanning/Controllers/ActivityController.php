@@ -7,6 +7,7 @@ use App\Features\EventPlanning\Models\Rundown;
 use App\Features\EventPlanning\Services\ActivityService;
 use App\Features\EventPlanning\Requests\StoreActivityRequest;
 use App\Features\EventPlanning\Requests\UpdateActivityRequest;
+use App\Features\Location\Services\PlaceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -17,13 +18,17 @@ class ActivityController
      * The activity service instance.
      */
     protected ActivityService $activityService;
+    protected PlaceService $placeService;
 
     /**
      * Create a new controller instance.
      */
-    public function __construct(ActivityService $activityService)
-    {
+    public function __construct(
+        ActivityService $activityService,
+        PlaceService $placeService
+    ) {
         $this->activityService = $activityService;
+        $this->placeService = $placeService;
     }
 
     /**
@@ -41,7 +46,8 @@ class ActivityController
      */
     public function create(Rundown $rundown): View
     {
-        return view('activities.create', compact('rundown'));
+        $places = $this->placeService->getAllActivePlacesList();
+        return view('activities.create', compact('rundown', 'places'));
     }
 
     /**

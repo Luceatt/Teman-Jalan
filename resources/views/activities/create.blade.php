@@ -64,7 +64,9 @@
                             name="place_id"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('place_id') border-red-500 @enderror"
                             required>
-                        <!-- Options will be loaded by JavaScript -->
+                        @foreach($places as $place)
+                            <option value="{{ $place->id }}">{{ $place->name }}</option>
+                        @endforeach
                     </select>
                     @error('place_id')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -133,42 +135,3 @@
         </div>
     </div>
 </div>
-
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const placeSelect = document.getElementById('place_id');
-
-    // Initialize TomSelect for place selection
-    const tomSelect = new TomSelect(placeSelect, {
-        valueField: 'id',
-        labelField: 'name',
-        searchField: 'name',
-        create: false,
-        load: function(query, callback) {
-            const url = `{{ route('activities.places.available') }}?search=${encodeURIComponent(query)}`;
-            fetch(url)
-                .then(response => response.json())
-                .then(json => {
-                    callback(json);
-                }).catch(() => {
-                    callback();
-                });
-        },
-        render: {
-            option: function(data, escape) {
-                return `<div class="flex items-center">
-                            <div>
-                                <div class="font-semibold">${escape(data.name)}</div>
-                                <div class="text-sm text-gray-500">${escape(data.address)}</div>
-                            </div>
-                        </div>`;
-            },
-            item: function(data, escape) {
-                return `<div>${escape(data.name)}</div>`;
-            }
-        }
-    });
-});
-</script>
-@endpush
