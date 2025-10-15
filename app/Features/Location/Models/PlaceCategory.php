@@ -26,7 +26,7 @@ class PlaceCategory extends Model
      */
     public function places(): HasMany
     {
-        return $this->hasMany(Place::class, 'category_id');
+        return $this->hasMany(\App\Features\Location\Models\Place::class, 'category_id');
     }
 
     /**

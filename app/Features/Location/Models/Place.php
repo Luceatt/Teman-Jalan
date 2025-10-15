@@ -32,7 +32,7 @@ class Place extends Model
      */
     public function category(): BelongsTo
     {
-        return $this->belongsTo(PlaceCategory::class, 'category_id');
+        return $this->belongsTo(\App\Features\Location\Models\PlaceCategory::class, 'category_id');
     }
 
     /**

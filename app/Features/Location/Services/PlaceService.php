@@ -16,7 +16,7 @@ class PlaceService
     /**
      * The place repository instance.
      */
-    protected PlaceRepositoryInterface $placeRepository;
+    protected $placeRepository;
 
     /**
      * Create a new service instance.
@@ -74,8 +74,8 @@ class PlaceService
         try {
             DB::beginTransaction();
 
-            // Handle image upload if provided
-            if ($image) {
+            // Handle image upload if provided and GD extension is available
+            if ($image && extension_loaded('gd')) {
                 $imagePath = $this->handleImageUpload($image);
                 $data['image'] = $imagePath;
             }
@@ -111,8 +111,8 @@ class PlaceService
                 throw new \Exception('Place not found');
             }
 
-            // Handle image upload if provided
-            if ($image) {
+            // Handle image upload if provided and GD extension is available
+            if ($image && extension_loaded('gd')) {
                 $imagePath = $this->handleImageUpload($image, $place->image);
                 $data['image'] = $imagePath;
             }

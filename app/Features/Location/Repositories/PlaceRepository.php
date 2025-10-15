@@ -12,12 +12,12 @@ class PlaceRepository implements PlaceRepositoryInterface
     /**
      * The Place model instance.
      */
-    protected Place $model;
+    protected $model;
 
     /**
      * Create a new repository instance.
      */
-    public function __construct(Place $model)
+    public function __construct(\App\Features\Location\Models\Place $model)
     {
         $this->model = $model;
     }
@@ -104,15 +104,33 @@ class PlaceRepository implements PlaceRepositoryInterface
      */
     public function getNearby(float $latitude, float $longitude, float $radiusKm = 10): Collection
     {
-        // Using Haversine formula for distance calculation
-        $haversine = "(6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude))))";
-
-        return $this->model->select('*')
-                         ->selectRaw("{$haversine} AS distance")
-                         ->having('distance', '<', $radiusKm)
-                         ->active()
+        return $this->model->active()
                          ->with('category')
-                         ->orderBy('distance')
-                         ->get();
+                         ->get()
+                         ->filter(function ($place) use ($latitude, $longitude, $radiusKm) {
+                             $distance = $this->calculateDistance($latitude, $longitude, $place->latitude, $place->longitude);
+                             $place->distance = $distance;
+                             return $distance <= $radiusKm;
+                         })
+                         ->sortBy('distance');
+    }
+
+    /**
+     * Calculate distance between two coordinates using Haversine formula.
+     */
+    private function calculateDistance(float $lat1, float $lng1, float $lat2, float $lng2): float
+    {
+        $earthRadius = 6371; // Earth's radius in kilometers
+
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLng = deg2rad($lng2 - $lng1);
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+             cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+             sin($dLng / 2) * sin($dLng / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        return $earthRadius * $c;
     }
 }
