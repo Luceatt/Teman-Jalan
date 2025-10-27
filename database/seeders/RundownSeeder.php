@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Features\EventPlanning\Models\Rundown;
-use App\Features\EventPlanning\Models\Activity;
-use App\Features\Location\Models\Place;
+use App\Models\EventPlanning\Activity;
+use App\Models\EventPlanning\Rundown;
+use App\Models\Location\Place;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class RundownSeeder extends Seeder
 {

@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
+use App\Repositories\EventPlanning\ActivityRepository;
+use App\Repositories\EventPlanning\Contracts\ActivityRepositoryInterface;
+use App\Repositories\EventPlanning\Contracts\RundownRepositoryInterface;
+use App\Repositories\EventPlanning\RundownRepository;
 use Illuminate\Support\ServiceProvider;
-use App\Features\EventPlanning\Repositories\Contracts\RundownRepositoryInterface;
-use App\Features\EventPlanning\Repositories\RundownRepository;
-use App\Features\EventPlanning\Repositories\Contracts\ActivityRepositoryInterface;
-use App\Features\EventPlanning\Repositories\ActivityRepository;
 
 class EventPlanningServiceProvider extends ServiceProvider
 {

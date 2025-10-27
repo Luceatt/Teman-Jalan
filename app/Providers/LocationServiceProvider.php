@@ -2,11 +2,9 @@
 
 namespace App\Providers;
 
-use App\Features\Location\Models\Place;
-use App\Features\Location\Models\PlaceCategory;
-use App\Features\Location\Repositories\Contracts\PlaceRepositoryInterface;
-use App\Features\Location\Repositories\PlaceRepository;
-use App\Features\Location\Services\PlaceService;
+use App\Repositories\Location\Contracts\PlaceRepositoryInterface;
+use App\Repositories\Location\PlaceRepository;
+use App\Services\Location\PlaceService;
 use Illuminate\Support\ServiceProvider;
 
 class LocationServiceProvider extends ServiceProvider

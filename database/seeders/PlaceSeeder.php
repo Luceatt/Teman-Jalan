@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Features\Location\Models\Place;
-use App\Features\Location\Models\PlaceCategory;
+use App\Models\Location\Place;
+use App\Models\Location\PlaceCategory;
 use Illuminate\Database\Seeder;
 
 class PlaceSeeder extends Seeder

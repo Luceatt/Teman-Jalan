@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Features\Location\Controllers\PlaceController;
-use App\Features\EventPlanning\Controllers\RundownController;
-use App\Features\EventPlanning\Controllers\ActivityController;
+use App\Http\Controllers\EventPlanning\ActivityController;
+use App\Http\Controllers\EventPlanning\RundownController;
+use App\Http\Controllers\Location\PlaceController;
 
 Route::get('/', function () {
     return view('welcome');

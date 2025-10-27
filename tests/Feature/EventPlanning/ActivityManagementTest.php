@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\EventPlanning;
 
-use App\Features\EventPlanning\Models\Activity;
-use App\Features\EventPlanning\Models\Rundown;
-use App\Features\Location\Models\Place;
-use App\Features\Location\Models\PlaceCategory;
+use App\Models\EventPlanning\Activity;
+use App\Models\EventPlanning\Rundown;
+use App\Models\Location\Place;
+use App\Models\Location\PlaceCategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -34,7 +34,7 @@ class ActivityManagementTest extends TestCase
             'end_time' => now()->addHour()->format('Y-m-d H:i:s'),
         ];
 
-        $response = $this->post(route('activities.store'), $activityData);
+        $response = $this->post(route('rundowns.activities.store', $this->rundown), $activityData);
 
         $response->assertRedirect(route('rundowns.show', $this->rundown->id));
         $this->assertDatabaseHas('activities', ['name' => 'Test Activity']);

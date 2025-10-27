@@ -1,8 +1,8 @@
 <?php
 
-use App\Features\Location\Models\Place;
-use App\Features\Location\Models\PlaceCategory;
-use App\Features\Location\Services\PlaceService;
+use App\Models\Location\Place;
+use App\Models\Location\PlaceCategory;
+use App\Services\Location\PlaceService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;

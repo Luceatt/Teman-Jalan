@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\EventPlanning;
 
-use App\Features\EventPlanning\Models\Rundown;
-use App\Features\Location\Models\Place;
-use App\Features\Location\Models\PlaceCategory;
+use App\Models\EventPlanning\Rundown;
+use App\Models\Location\Place;
+use App\Models\Location\PlaceCategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
