@@ -12,3 +12,4 @@ Route::post('/login', [AuthController::class, 'loginProcess'])->name('login.proc
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
