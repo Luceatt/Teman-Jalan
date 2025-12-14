@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FriendController;
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'registerProcess'])->name('register.process');
@@ -12,3 +13,4 @@ Route::post('/login', [AuthController::class, 'loginProcess'])->name('login.proc
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::middleware('auth')->get('/friends', [FriendController::class, 'index']);
