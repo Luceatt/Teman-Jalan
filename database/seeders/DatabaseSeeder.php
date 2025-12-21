@@ -862,5 +862,10 @@ class DatabaseSeeder extends Seeder
                 'last_visit_date' => '2024-12-20',
             ],
         ]);
+
+        $this->call([
+            PlaceSeeder::class,
+            RundownSeeder::class,
+        ]);
     }
 }
