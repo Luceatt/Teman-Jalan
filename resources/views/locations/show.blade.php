@@ -9,7 +9,7 @@
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
                     <a href="{{ route('places.index') }}" class="text-gray-700 hover:text-blue-600">
-                        Places
+                        {{ __('Places Management') }}
                     </a>
                 </li>
                 <li>
@@ -49,19 +49,19 @@
                     <div class="flex justify-between items-start mb-4">
                         <h1 class="text-3xl font-bold text-gray-900">{{ $place->name }}</h1>
                         <span class="px-3 py-1 text-sm font-medium rounded-full {{ $place->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                            {{ $place->is_active ? 'Active' : 'Inactive' }}
+                            {{ $place->is_active ? __('Active') : __('Inactive') }}
                         </span>
                     </div>
 
                     <!-- Description -->
                     <div class="mb-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Description</h3>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ __('Description') }}</h3>
                         <p class="text-gray-700 leading-relaxed">{{ $place->description }}</p>
                     </div>
 
                     <!-- Address -->
                     <div class="mb-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Address</h3>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ __('Address') }}</h3>
                         <div class="flex items-start">
                             <svg class="w-5 h-5 text-gray-400 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
@@ -73,10 +73,10 @@
                     <!-- Coordinates -->
                     @if($place->latitude && $place->longitude)
                         <div class="mb-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Coordinates</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ __('Coordinates') }}</h3>
                             <div class="bg-gray-50 rounded-md p-3 font-mono text-sm">
-                                <div>Latitude: {{ number_format($place->latitude, 8) }}</div>
-                                <div>Longitude: {{ number_format($place->longitude, 8) }}</div>
+                                <div>{{ __('Latitude') }}: {{ number_format($place->latitude, 8) }}</div>
+                                <div>{{ __('Longitude') }}: {{ number_format($place->longitude, 8) }}</div>
                             </div>
                         </div>
                     @endif
@@ -84,8 +84,8 @@
                     <!-- Timestamps -->
                     <div class="text-sm text-gray-500 border-t pt-4">
                         <div class="flex justify-between">
-                            <span>Created: {{ optional($place->created_at)->format('M j, Y \a\t g:i A') ?? 'N/A' }}</span>
-                            <span>Last Updated: {{ optional($place->updated_at)->format('M j, Y \a\t g:i A') ?? 'N/A' }}</span>
+                            <span>{{ __('Created') }}: {{ optional($place->created_at)->format('M j, Y \a\t g:i A') ?? 'N/A' }}</span>
+                            <span>{{ __('Last Updated') }}: {{ optional($place->updated_at)->format('M j, Y \a\t g:i A') ?? 'N/A' }}</span>
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
         <div class="lg:col-span-1">
             <!-- Actions Card -->
             <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Actions') }}</h3>
 
                 <div class="space-y-3">
                     <a href="{{ route('places.edit', $place->id) }}"
@@ -104,7 +104,7 @@
                         <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
                         </svg>
-                        Edit Place
+                        {{ __('Edit Place') }}
                     </a>
 
                     <button onclick="deletePlace({{ $place->id }})"
@@ -113,7 +113,7 @@
                             <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd"></path>
                             <path fill-rule="evenodd" d="M10 5a2 2 0 00-2 2v6a2 2 0 004 0V7a2 2 0 00-2-2zm-4 4a4 4 0 118 0v4a4 4 0 01-8 0V9z" clip-rule="evenodd"></path>
                         </svg>
-                        Delete Place
+                        {{ __('Delete Place') }}
                     </button>
 
                     <a href="{{ route('places.index') }}"
@@ -121,7 +121,7 @@
                         <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"></path>
                         </svg>
-                        Back to Places
+                        {{ __('Back to Places') }}
                     </a>
                 </div>
             </div>
@@ -129,7 +129,7 @@
             <!-- Map Card (if coordinates available) -->
             @if($place->latitude && $place->longitude)
                 <div class="bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Location</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Location') }}</h3>
                     <div class="aspect-square bg-gray-200 rounded-md mb-3">
                         <!-- Placeholder for map - in a real app, you'd integrate with Google Maps or similar -->
                         <div class="w-full h-full flex items-center justify-center text-gray-500">
@@ -137,7 +137,7 @@
                                 <svg class="w-8 h-8 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707L6 18.414V5.586L3.707 3.293zM17.707 5.293L14 1.586v12.828l2.293 2.293A1 1 0 0018 16V6a1 1 0 00-.293-.707z" clip-rule="evenodd"></path>
                                 </svg>
-                                <p class="text-sm">Map View</p>
+                                <p class="text-sm">{{ __('Map View') }}</p>
                                 <p class="text-xs">{{ number_format($place->latitude, 4) }}, {{ number_format($place->longitude, 4) }}</p>
                             </div>
                         </div>
@@ -149,7 +149,7 @@
                             <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
                             </svg>
-                            Open in Maps
+                            {{ __('Open in Maps') }}
                         </button>
 
                         <button onclick="getDirections()"
@@ -157,7 +157,7 @@
                             <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                             </svg>
-                            Get Directions
+                            {{ __('Get Directions') }}
                         </button>
                     </div>
                 </div>
@@ -171,17 +171,17 @@
     <div class="flex items-center justify-center min-h-screen p-4">
         <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
             <div class="p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Confirm Deletion</h3>
-                <p class="text-gray-600 mb-6">Are you sure you want to delete "{{ $place->name }}"? This action cannot be undone.</p>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Confirm Deletion') }}</h3>
+                <p class="text-gray-600 mb-6">{{ __('Are you sure you want to delete this place?') }}</p>
 
                 <div class="flex justify-end space-x-3">
                     <button onclick="closeDeleteModal()"
                             class="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50">
-                        Cancel
+                        {{ __('Cancel') }}
                     </button>
                     <button id="confirm-delete-btn"
                             class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
-                        Delete Place
+                        {{ __('Delete Place') }}
                     </button>
                 </div>
             </div>

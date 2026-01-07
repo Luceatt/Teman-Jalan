@@ -41,29 +41,48 @@
                         @auth
                             <a href="{{ route('dashboard') }}"
                                class="text-sm font-medium transition-colors duration-150 {{ request()->routeIs('dashboard') ? 'text-blue-600' : 'text-gray-500 hover:text-gray-900' }}">
-                                Dashboard
+                                {{ __('Dashboard') }}
                             </a>
                             <a href="{{ route('places.index') }}"
                                class="text-sm font-medium transition-colors duration-150 {{ request()->routeIs('places.*') ? 'text-blue-600' : 'text-gray-500 hover:text-gray-900' }}">
-                                Tempat
+                                {{ __('Places') }}
                             </a>
                             <a href="{{ route('rundowns.index') }}"
                                class="text-sm font-medium transition-colors duration-150 {{ request()->routeIs('rundowns.*') ? 'text-blue-600' : 'text-gray-500 hover:text-gray-900' }}">
-                                Rundown
+                                {{ __('Rundown') }}
                             </a>
                             <a href="{{ url('/friends') }}"
                                class="text-sm font-medium transition-colors duration-150 {{ request()->is('friends*') ? 'text-blue-600' : 'text-gray-500 hover:text-gray-900' }}">
-                                Teman
+                                {{ __('Friends') }}
                             </a>
                             <a href="{{ route('history.index') }}"
                                class="text-sm font-medium transition-colors duration-150 {{ request()->routeIs('history.*') ? 'text-blue-600' : 'text-gray-500 hover:text-gray-900' }}">
-                                Riwayat
+                                {{ __('History') }}
                             </a>
                         @endauth
                     </div>
 
-                    <!-- User Menu / Auth Links -->
-                    <div class="hidden md:flex items-center">
+                    <!-- Language Switcher & User Menu -->
+                    <div class="hidden md:flex items-center space-x-4">
+                        <!-- Language Switcher -->
+                        <div class="relative" id="lang-menu-container">
+                            <button type="button" id="lang-menu-button" class="flex items-center text-gray-500 hover:text-gray-900 focus:outline-none">
+                                <span class="mr-1">{{ App::getLocale() == 'id' ? '🇮🇩' : '🇬🇧' }}</span>
+                                <span class="text-sm font-medium uppercase">{{ App::getLocale() }}</span>
+                                <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                            </button>
+                             <div id="lang-menu-dropdown"
+                                     class="hidden absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                     role="menu">
+                                    <a href="{{ route('lang.switch', 'id') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                        🇮🇩 Indonesian
+                                    </a>
+                                    <a href="{{ route('lang.switch', 'en') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                        🇬🇧 English
+                                    </a>
+                                </div>
+                        </div>
+
                         @auth
                             <div class="relative ml-3" id="user-menu-container">
                                 <div>
@@ -82,21 +101,21 @@
                                      class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                                      role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                                     <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                                        <i class="fas fa-user mr-2 w-4"></i> Profile
+                                        <i class="fas fa-user mr-2 w-4"></i> {{ __('Profile') }}
                                     </a>
                                     <div class="border-t border-gray-100 my-1"></div>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
                                         <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50" role="menuitem">
-                                            <i class="fas fa-sign-out-alt mr-2 w-4"></i> Sign out
+                                            <i class="fas fa-sign-out-alt mr-2 w-4"></i> {{ __('Sign out') }}
                                         </button>
                                     </form>
                                 </div>
                             </div>
                         @else
                             <div class="space-x-4">
-                                <a href="{{ route('login') }}" class="text-gray-500 hover:text-gray-900 font-medium text-sm">Log in</a>
-                                <a href="{{ route('register') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm">Sign up</a>
+                                <a href="{{ route('login') }}" class="text-gray-500 hover:text-gray-900 font-medium text-sm">{{ __('Log in') }}</a>
+                                <a href="{{ route('register') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm">{{ __('Sign up') }}</a>
                             </div>
                         @endauth
                     </div>
@@ -161,7 +180,7 @@
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="block w-full text-left rounded-md px-3 py-2 text-base font-medium text-red-600 hover:bg-gray-50 hover:text-red-700">
-                                    Sign out
+                                    {{ __('Sign out') }}
                                 </button>
                             </form>
                         </div>
@@ -266,6 +285,24 @@
                 document.addEventListener('click', function(e) {
                     if (!userMenuBtn.contains(e.target) && !userMenuDropdown.contains(e.target)) {
                         userMenuDropdown.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Language dropdown toggle
+            const langMenuBtn = document.getElementById('lang-menu-button');
+            const langMenuDropdown = document.getElementById('lang-menu-dropdown');
+            
+            if (langMenuBtn && langMenuDropdown) {
+                langMenuBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    langMenuDropdown.classList.toggle('hidden');
+                });
+
+                 // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!langMenuBtn.contains(e.target) && !langMenuDropdown.contains(e.target)) {
+                        langMenuDropdown.classList.add('hidden');
                     }
                 });
             }

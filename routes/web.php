@@ -11,6 +11,7 @@ use App\Http\Controllers\PlaceHistoryController;
 use App\Http\Controllers\RundownController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\PlaceController;
+use App\Http\Controllers\LocaleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,9 @@ use App\Http\Controllers\PlaceController;
 Route::get('/', function () {
     return auth()->check() ? redirect()->route('dashboard') : redirect()->route('login');
 });
+
+// Language Switcher
+Route::get('lang/{locale}', [LocaleController::class, 'switch'])->name('lang.switch');
 
 // Guest Routes (Authentication)
 Route::middleware('guest')->group(function () {

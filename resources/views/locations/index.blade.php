@@ -5,10 +5,10 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Places Management</h1>
+        <h1 class="text-3xl font-bold text-gray-900">{{ __('Places Management') }}</h1>
         <a href="{{ route('places.create') }}"
            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium">
-            Add New Place
+            {{ __('Add New Place') }}
         </a>
     </div>
 
@@ -17,18 +17,18 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <!-- Search Input -->
             <div>
-                <label for="search" class="block text-sm font-medium text-gray-700 mb-2">Search Places</label>
+                <label for="search" class="block text-sm font-medium text-gray-700 mb-2">{{ __('Search Places') }}</label>
                 <input type="text"
                        id="search"
-                       placeholder="Search by name or description..."
+                       placeholder="{{ __('Search by name or description...') }}"
                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
 
             <!-- Category Filter -->
             <div>
-                <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                <label for="category" class="block text-sm font-medium text-gray-700 mb-2">{{ __('Category') }}</label>
                 <select id="category" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">All Categories</option>
+                    <option value="">{{ __('All Categories') }}</option>
                     @foreach($categories as $category)
                         <option value="{{ $category }}">{{ $category }}</option>
                     @endforeach
@@ -37,17 +37,17 @@
 
             <!-- Nearby Search -->
             <div>
-                <label for="nearby" class="block text-sm font-medium text-gray-700 mb-2">Find Nearby</label>
+                <label for="nearby" class="block text-sm font-medium text-gray-700 mb-2">{{ __('Find Nearby') }}</label>
                 <button id="nearby-btn"
                         class="w-full bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-md font-medium">
-                    Use My Location
+                    {{ __('Use My Location') }}
                 </button>
             </div>
         </div>
 
         <!-- Search Results Info -->
         <div id="search-results" class="mt-4 hidden">
-            <p class="text-sm text-gray-600">Found <span id="results-count">0</span> places</p>
+            <p class="text-sm text-gray-600">{{ __('Found') }} <span id="results-count">0</span> {{ __('places') }}</p>
         </div>
     </div>
 
@@ -91,16 +91,16 @@
 
                     <div class="flex justify-between items-center">
                         <span class="text-sm {{ $place->is_active ? 'text-green-600' : 'text-red-600' }}">
-                            {{ $place->is_active ? 'Active' : 'Inactive' }}
+                            {{ $place->is_active ? __('Active') : __('Inactive') }}
                         </span>
 
                         <div class="flex space-x-2">
                             <a href="{{ route('places.show', $place->id) }}"
-                               class="text-blue-600 hover:text-blue-800 text-sm font-medium">View</a>
+                               class="text-blue-600 hover:text-blue-800 text-sm font-medium">{{ __('View') }}</a>
                             <a href="{{ route('places.edit', $place->id) }}"
-                               class="text-green-600 hover:text-green-800 text-sm font-medium">Edit</a>
+                               class="text-green-600 hover:text-green-800 text-sm font-medium">{{ __('Edit') }}</a>
                             <button onclick="deletePlace({{ $place->id }})"
-                                    class="text-red-600 hover:text-red-800 text-sm font-medium">Delete</button>
+                                    class="text-red-600 hover:text-red-800 text-sm font-medium">{{ __('Delete') }}</button>
                         </div>
                     </div>
                 </div>
@@ -111,8 +111,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 </svg>
-                <h3 class="text-lg font-medium text-gray-900 mb-2">No places found</h3>
-                <p class="text-gray-500">Get started by creating your first place.</p>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">{{ __('No places found') }}</h3>
+                <p class="text-gray-500">{{ __('Get started by creating your first place.') }}</p>
             </div>
         @endforelse
     </div>
@@ -130,17 +130,17 @@
     <div class="flex items-center justify-center min-h-screen p-4">
         <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
             <div class="p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Confirm Deletion</h3>
-                <p class="text-gray-600 mb-6">Are you sure you want to delete this place? This action cannot be undone.</p>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Confirm Deletion') }}</h3>
+                <p class="text-gray-600 mb-6">{{ __('Are you sure you want to delete this place?') }}</p>
 
                 <div class="flex justify-end space-x-3">
                     <button onclick="closeDeleteModal()"
                             class="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50">
-                        Cancel
+                        {{ __('Cancel') }}
                     </button>
                     <button id="confirm-delete-btn"
                             class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
-                        Delete
+                        {{ __('Delete') }}
                     </button>
                 </div>
             </div>

@@ -5,10 +5,10 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Rundown Management</h1>
+        <h1 class="text-3xl font-bold text-gray-900">{{ __('Rundown Management') }}</h1>
         <a href="{{ route('rundowns.create') }}"
            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium">
-            Buat Rundown Baru
+            {{ __('Create New Rundown') }}
         </a>
     </div>
 
@@ -22,7 +22,7 @@
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Total Rundown</p>
+                    <p class="text-sm font-medium text-gray-600">{{ __('Total Rundown') }}</p>
                     <p class="text-2xl font-semibold text-gray-900">{{ $stats['total'] }}</p>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Diterbitkan</p>
+                    <p class="text-sm font-medium text-gray-600">{{ __('Published') }}</p>
                     <p class="text-2xl font-semibold text-gray-900">{{ $stats['published'] }}</p>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Selesai</p>
+                    <p class="text-sm font-medium text-gray-600">{{ __('Completed') }}</p>
                     <p class="text-2xl font-semibold text-gray-900">{{ $stats['completed'] }}</p>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                     </svg>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Hari Ini</p>
+                    <p class="text-sm font-medium text-gray-600">{{ __('Today') }}</p>
                     <p class="text-2xl font-semibold text-gray-900">{{ $stats['today'] }}</p>
                 </div>
             </div>
@@ -74,7 +74,7 @@
     <!-- Rundowns List -->
     <div class="bg-white rounded-lg shadow overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-200">
-            <h2 class="text-lg font-semibold text-gray-900">Daftar Rundown</h2>
+            <h2 class="text-lg font-semibold text-gray-900">{{ __('Rundown List') }}</h2>
         </div>
 
         @if($rundowns->count() > 0)
@@ -83,22 +83,22 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Judul
+                                {{ __('Title') }}
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Tanggal
+                                {{ __('Date') }}
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status
+                                {{ __('Status') }}
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Aktivitas
+                                {{ __('Activities') }}
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Durasi Total
+                                {{ __('Total Duration') }}
                             </th>
                             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Aksi
+                                {{ __('Actions') }}
                             </th>
                         </tr>
                     </thead>
@@ -132,7 +132,7 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ $rundown->activities->count() }} aktivitas
+                                    {{ $rundown->activities->count() }} {{ __('Activities') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                     {{ $rundown->getFormattedTotalDuration() }}
@@ -140,16 +140,16 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
                                         <a href="{{ route('rundowns.show', $rundown->id) }}"
-                                           class="text-blue-600 hover:text-blue-900">Lihat</a>
+                                           class="text-blue-600 hover:text-blue-900">{{ __('View') }}</a>
                                         <a href="{{ route('rundowns.edit', $rundown->id) }}"
-                                           class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                           class="text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
                                         @if($rundown->status === 'draft')
                                             <form action="{{ route('rundowns.publish', $rundown->id) }}" method="POST" class="inline">
                                                 @csrf
                                                 <button type="submit"
                                                         class="text-green-600 hover:text-green-900"
-                                                        onclick="return confirm('Yakin ingin menerbitkan rundown ini?')">
-                                                    Terbitkan
+                                                        onclick="return confirm('{{ __('Are you sure you want to publish this rundown?') }}')">
+                                                    {{ __('Publish') }}
                                                 </button>
                                             </form>
                                         @endif
@@ -158,8 +158,8 @@
                                                 @csrf
                                                 <button type="submit"
                                                         class="text-purple-600 hover:text-purple-900"
-                                                        onclick="return confirm('Yakin rundown ini sudah selesai?')">
-                                                    Selesai
+                                                        onclick="return confirm('{{ __('Are you sure this rundown is complete?') }}')">
+                                                    {{ __('Completed') }}
                                                 </button>
                                             </form>
                                         @endif
@@ -168,8 +168,8 @@
                                             @method('DELETE')
                                             <button type="submit"
                                                     class="text-red-600 hover:text-red-900"
-                                                    onclick="return confirm('Yakin ingin menghapus rundown ini?')">
-                                                Hapus
+                                                    onclick="return confirm('{{ __('Are you sure you want to delete this rundown?') }}')">
+                                                {{ __('Delete') }}
                                             </button>
                                         </form>
                                     </div>
@@ -189,12 +189,12 @@
                 <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                 </svg>
-                <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada rundown</h3>
-                <p class="mt-1 text-sm text-gray-500">Mulai buat rundown pertama Anda.</p>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">{{ __('No rundowns yet') }}</h3>
+                <p class="mt-1 text-sm text-gray-500">{{ __('Start creating your first rundown.') }}</p>
                 <div class="mt-6">
                     <a href="{{ route('rundowns.create') }}"
                        class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                        Buat Rundown Baru
+                        {{ __('Create New Rundown') }}
                     </a>
                 </div>
             </div>

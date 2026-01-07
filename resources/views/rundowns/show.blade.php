@@ -28,7 +28,7 @@
                 </span>
                 <a href="{{ route('rundowns.edit', $rundown->id) }}"
                    class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium">
-                    Edit
+                    {{ __('Edit') }}
                 </a>
             </div>
         </div>
@@ -44,10 +44,10 @@
         <!-- Activities Timeline -->
         <div class="bg-white rounded-lg shadow-lg p-6">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-lg font-semibold text-gray-900">Jadwal Aktivitas</h2>
+                <h2 class="text-lg font-semibold text-gray-900">{{ __('Activity Schedule') }}</h2>
                 <a href="{{ route('rundowns.activities.create', $rundown->id) }}"
                    class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm font-medium">
-                    Tambah Aktivitas
+                    {{ __('Add Activity') }}
                 </a>
             </div>
 
@@ -67,9 +67,9 @@
                                         @if($activity->isOngoing()) bg-green-100 text-green-800
                                         @elseif($activity->isPast()) bg-gray-100 text-gray-800
                                         @else bg-blue-100 text-blue-800 @endif">
-                                        @if($activity->isOngoing()) Sedang Berlangsung
-                                        @elseif($activity->isPast()) Selesai
-                                        @else Akan Datang @endif
+                                        @if($activity->isOngoing()) {{ __('Ongoing') }}
+                                        @elseif($activity->isPast()) {{ __('Completed') }}
+                                        @else {{ __('Upcoming') }} @endif
                                     </span>
                                 </div>
                                 @if($activity->description)
@@ -77,7 +77,7 @@
                                 @endif
                                 <div class="mt-2 flex items-center space-x-4 text-sm text-gray-500">
                                     <span>{{ $activity->start_time->format('H:i') }} - {{ $activity->end_time->format('H:i') }}</span>
-                                    <span>{{ $activity->getDurationInMinutes() }} menit</span>
+                                    <span>{{ $activity->getDurationInMinutes() }} {{ __('minutes') }}</span>
                                 </div>
                                 <div class="mt-2">
                                     <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded">
@@ -88,14 +88,14 @@
                             <div class="flex-shrink-0">
                                 <div class="flex space-x-2">
                                     <a href="{{ route('activities.edit', $activity->id) }}"
-                                       class="text-indigo-600 hover:text-indigo-900 text-sm">Edit</a>
+                                       class="text-indigo-600 hover:text-indigo-900 text-sm">{{ __('Edit') }}</a>
                                     <form action="{{ route('activities.destroy', $activity->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
                                                 class="text-red-600 hover:text-red-900 text-sm"
-                                                onclick="return confirm('Yakin ingin menghapus aktivitas ini?')">
-                                            Hapus
+                                                onclick="return confirm('{{ __('Are you sure you want to delete this activity?') }}')">
+                                            {{ __('Delete') }}
                                         </button>
                                     </form>
                                 </div>
@@ -107,12 +107,12 @@
                 <!-- Summary -->
                 <div class="mt-6 pt-6 border-t border-gray-200">
                     <div class="flex justify-between items-center text-sm">
-                        <span class="font-medium text-gray-900">Total Durasi:</span>
+                        <span class="font-medium text-gray-900">{{ __('Total Duration') }}:</span>
                         <span class="text-gray-700">{{ $rundown->getFormattedTotalDuration() }}</span>
                     </div>
                     <div class="flex justify-between items-center text-sm mt-2">
-                        <span class="font-medium text-gray-900">Jumlah Aktivitas:</span>
-                        <span class="text-gray-700">{{ $activities->count() }} aktivitas</span>
+                        <span class="font-medium text-gray-900">{{ __('Activities') }}:</span>
+                        <span class="text-gray-700">{{ $activities->count() }} {{ __('activities') }}</span>
                     </div>
                 </div>
             @else
@@ -120,12 +120,12 @@
                     <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
-                    <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada aktivitas</h3>
-                    <p class="mt-1 text-sm text-gray-500">Tambahkan aktivitas pertama untuk rundown ini.</p>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900">{{ __('No activities yet') }}</h3>
+                    <p class="mt-1 text-sm text-gray-500">{{ __('Add the first activity for this rundown.') }}</p>
                     <div class="mt-6">
                         <a href="{{ route('rundowns.activities.create', $rundown->id) }}"
                            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                            Tambah Aktivitas
+                            {{ __('Add Activity') }}
                         </a>
                     </div>
                 </div>
@@ -135,10 +135,10 @@
         <!-- Map -->
         <div class="bg-white rounded-lg shadow-lg p-6">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-lg font-semibold text-gray-900">Peta Lokasi</h2>
+                <h2 class="text-lg font-semibold text-gray-900">{{ __('Location Map') }}</h2>
                 <button onclick="refreshRundownMap({{ $rundown->id }})"
                         class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium">
-                    Refresh Map
+                    {{ __('Refresh Map') }}
                 </button>
             </div>
 
@@ -147,7 +147,7 @@
             @if($places->count() > 0)
                 <!-- Places List -->
                 <div class="mt-4">
-                    <h3 class="text-sm font-medium text-gray-900 mb-3">Lokasi yang Dikunjungi:</h3>
+                    <h3 class="text-sm font-medium text-gray-900 mb-3">{{ __('Visited Locations') }}:</h3>
                     <div class="space-y-2 max-h-40 overflow-y-auto">
                         @foreach($places as $place)
                             <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
@@ -155,7 +155,7 @@
                                     <span class="text-sm font-medium text-gray-900">{{ $place->name }}</span>
                                     <p class="text-xs text-gray-600">{{ $place->address }}</p>
                                 </div>
-                                <span class="text-xs text-gray-500">{{ $place->category->name ?? 'Uncategorized' }}</span>
+                                <span class="text-xs text-gray-500">{{ $place->category->name ?? __('Uncategorized') }}</span>
                             </div>
                         @endforeach
                     </div>
@@ -166,7 +166,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
-                    <p class="mt-2 text-sm text-gray-500">Tambahkan aktivitas dengan lokasi untuk melihat peta</p>
+                    <p class="mt-2 text-sm text-gray-500">{{ __('Add activities with locations to view map') }}</p>
                 </div>
             @endif
         </div>

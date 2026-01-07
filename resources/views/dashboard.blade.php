@@ -13,7 +13,7 @@
             <div class="relative z-10">
                 <h2 class="text-3xl font-bold mb-2 flex items-center">
                     <i class="fas fa-hand-sparkles mr-3 text-yellow-400"></i>
-                    Selamat Datang, {{ Auth::user()->name }}!
+                    {{ __('Welcome') }}, {{ Auth::user()->name }}!
                 </h2>
                 <p class="text-gray-300 text-lg flex items-center">
                     <i class="far fa-calendar mr-2"></i>
@@ -29,7 +29,7 @@
                 <div class="p-6">
                     <div class="flex justify-between items-center text-white">
                         <div>
-                            <p class="text-blue-100 text-sm font-medium uppercase tracking-wider mb-1">Total Events</p>
+                            <p class="text-blue-100 text-sm font-medium uppercase tracking-wider mb-1">{{ __('Total Events') }}</p>
                             <h3 class="text-3xl font-bold">{{ $upcomingEvents->count() }}</h3>
                         </div>
                         <div class="bg-white bg-opacity-20 rounded-full p-3">
@@ -44,7 +44,7 @@
                 <div class="p-6">
                     <div class="flex justify-between items-center text-white">
                         <div>
-                            <p class="text-purple-100 text-sm font-medium uppercase tracking-wider mb-1">Total Places</p>
+                            <p class="text-purple-100 text-sm font-medium uppercase tracking-wider mb-1">{{ __('Total Places') }}</p>
                             <h3 class="text-3xl font-bold">{{ $totalPlacesVisited }}</h3>
                         </div>
                         <div class="bg-white bg-opacity-20 rounded-full p-3">
@@ -59,7 +59,7 @@
                 <div class="p-6">
                     <div class="flex justify-between items-center text-white">
                         <div>
-                            <p class="text-cyan-100 text-sm font-medium uppercase tracking-wider mb-1">Total Friends</p>
+                            <p class="text-cyan-100 text-sm font-medium uppercase tracking-wider mb-1">{{ __('Total Friends') }}</p>
                             <h3 class="text-3xl font-bold">{{ $totalFriends }}</h3>
                         </div>
                         <div class="bg-white bg-opacity-20 rounded-full p-3">
@@ -80,8 +80,8 @@
                                 <i class="fas fa-calendar-alt text-xl"></i>
                             </div>
                             <div>
-                                <h5 class="text-lg font-bold text-gray-800">Upcoming Events</h5>
-                                <p class="text-sm text-gray-500">Event mendatang anda</p>
+                                <h5 class="text-lg font-bold text-gray-800">{{ __('Upcoming Events') }}</h5>
+                                <p class="text-sm text-gray-500">{{ __('Your upcoming events') }}</p>
                             </div>
                         </div>
                     </div>
@@ -117,11 +117,11 @@
                                 <div class="bg-gray-50 rounded-full p-4 mb-4">
                                     <i class="far fa-calendar-times text-gray-300 text-4xl"></i>
                                 </div>
-                                <h6 class="text-gray-900 font-medium mb-1">Belum ada event</h6>
-                                <p class="text-gray-500 text-sm mb-4">Mulai rencanakan perjalanan anda sekarang!</p>
+                                <h6 class="text-gray-900 font-medium mb-1">{{ __('No events yet') }}</h6>
+                                <p class="text-gray-500 text-sm mb-4">{{ __('Start planning your trip now!') }}</p>
                                 <a href="{{ route('rundowns.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                                     <i class="fas fa-plus mr-2"></i>
-                                    Buat Event
+                                    {{ __('Create Event') }}
                                 </a>
                             </div>
                         @endif
@@ -138,13 +138,13 @@
                                     :class="{ 'bg-white text-blue-600 shadow-sm': activeTab === 'places', 'text-gray-500 hover:text-gray-700': activeTab !== 'places' }"
                                     class="flex-1 flex items-center justify-center py-2.5 px-4 rounded-lg text-sm font-medium transition-all duration-200">
                                 <i class="fas fa-map-marker-alt mr-2"></i>
-                                Favorite Places
+                                {{ __('Favorite Places') }}
                             </button>
                             <button @click="activeTab = 'friends'" 
                                     :class="{ 'bg-white text-blue-600 shadow-sm': activeTab === 'friends', 'text-gray-500 hover:text-gray-700': activeTab !== 'friends' }"
                                     class="flex-1 flex items-center justify-center py-2.5 px-4 rounded-lg text-sm font-medium transition-all duration-200">
                                 <i class="fas fa-user-friends mr-2"></i>
-                                Favorite Friends
+                                {{ __('Favorite Friends') }}
                             </button>
                         </div>
                     </div>
@@ -188,11 +188,11 @@
                                     <div class="bg-white rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4 shadow-sm">
                                         <i class="fas fa-map-marked-alt text-gray-300 text-3xl"></i>
                                     </div>
-                                    <h3 class="text-gray-900 font-medium mb-1">Belum ada tempat favorit</h3>
-                                    <p class="text-gray-500 text-sm mb-6">Jelajahi tempat baru dan tambahkan ke favorit!</p>
+                                    <h3 class="text-gray-900 font-medium mb-1">{{ __('No favorite places yet') }}</h3>
+                                    <p class="text-gray-500 text-sm mb-6">{{ __('Explore new places and add them to favorites!') }}</p>
                                     <a href="{{ route('places.index') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors shadow-sm">
                                         <i class="fas fa-plus mr-2"></i>
-                                        Tambah Tempat
+                                        {{ __('Add Place') }}
                                     </a>
                                 </div>
                             @endif
@@ -219,7 +219,7 @@
                                                     </p>
                                                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700">
                                                         <i class="fas fa-route mr-1"></i>
-                                                        {{ $friendship->times_together }}x jalan bareng
+                                                        {{ $friendship->times_together }}x {{ __('times together') }}
                                                     </span>
                                                 </div>
                                             </div>
@@ -231,11 +231,11 @@
                                     <div class="bg-white rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4 shadow-sm">
                                         <i class="fas fa-users text-gray-300 text-3xl"></i>
                                     </div>
-                                    <h3 class="text-gray-900 font-medium mb-1">Belum ada teman favorit</h3>
-                                    <p class="text-gray-500 text-sm mb-6">Ajak temanmu bergabung dan jalan bersama!</p>
+                                    <h3 class="text-gray-900 font-medium mb-1">{{ __('No favorite friends yet') }}</h3>
+                                    <p class="text-gray-500 text-sm mb-6">{{ __('Invite your friends to join and go out together!') }}</p>
                                     <a href="{{ url('/friends') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors shadow-sm">
                                         <i class="fas fa-user-plus mr-2"></i>
-                                        Tambah Teman
+                                        {{ __('Add Friend') }}
                                     </a>
                                 </div>
                             @endif

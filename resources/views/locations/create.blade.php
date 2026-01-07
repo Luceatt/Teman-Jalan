@@ -9,7 +9,7 @@
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
                     <a href="{{ route('places.index') }}" class="text-gray-700 hover:text-blue-600">
-                        Places
+                        {{ __('Places Management') }}
                     </a>
                 </li>
                 <li>
@@ -17,7 +17,7 @@
                         <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                         </svg>
-                        <span class="ml-1 text-gray-500">Create</span>
+                        <span class="ml-1 text-gray-500">{{ __('Create') }}</span>
                     </div>
                 </li>
             </ol>
@@ -25,7 +25,7 @@
     </div>
 
     <div class="bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-bold text-gray-900 mb-6">Create New Place</h1>
+        <h1 class="text-2xl font-bold text-gray-900 mb-6">{{ __('Create New Place') }}</h1>
 
         <form action="{{ route('places.store') }}" method="POST" enctype="multipart/form-data" id="create-place-form">
             @csrf
@@ -33,13 +33,13 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Basic Information -->
                 <div class="lg:col-span-2">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Basic Information</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Basic Information') }}</h3>
                 </div>
 
                 <!-- Name -->
                 <div class="lg:col-span-2">
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-                        Place Name <span class="text-red-500">*</span>
+                        {{ __('Place Name') }} <span class="text-red-500">*</span>
                     </label>
                     <input type="text"
                            id="name"
@@ -55,13 +55,13 @@
                 <!-- Category -->
                 <div>
                     <label for="category" class="block text-sm font-medium text-gray-700 mb-2">
-                        Category <span class="text-red-500">*</span>
+                        {{ __('Category') }} <span class="text-red-500">*</span>
                     </label>
                     <select id="category"
                             name="category"
                             required
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('category') border-red-500 @enderror">
-                        <option value="">Select a category</option>
+                        <option value="">{{ __('Select a category') }}</option>
                         @foreach($categories as $category)
                             <option value="{{ $category }}" {{ old('category') == $category ? 'selected' : '' }}>
                                 {{ $category }}
@@ -75,25 +75,25 @@
 
                 <!-- Status -->
                 <div>
-                    <label for="is_active" class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                    <label for="is_active" class="block text-sm font-medium text-gray-700 mb-2">{{ __('Status') }}</label>
                     <select id="is_active"
                             name="is_active"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="1" {{ old('is_active', '1') == '1' ? 'selected' : '' }}>Active</option>
-                        <option value="0" {{ old('is_active') == '0' ? 'selected' : '' }}>Inactive</option>
+                        <option value="1" {{ old('is_active', '1') == '1' ? 'selected' : '' }}>{{ __('Active') }}</option>
+                        <option value="0" {{ old('is_active') == '0' ? 'selected' : '' }}>{{ __('Inactive') }}</option>
                     </select>
                 </div>
 
                 <!-- Description -->
                 <div class="lg:col-span-2">
                     <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-                        Description <span class="text-red-500">*</span>
+                        {{ __('Description') }} <span class="text-red-500">*</span>
                     </label>
                     <textarea id="description"
                               name="description"
                               rows="4"
                               required
-                              placeholder="Describe this place..."
+                              placeholder="{{ __('Describe this place...') }}"
                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
                     @error('description')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -102,19 +102,19 @@
 
                 <!-- Location Information -->
                 <div class="lg:col-span-2">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Location Information</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Location Information') }}</h3>
                 </div>
 
                 <!-- Address -->
                 <div class="lg:col-span-2">
                     <label for="address" class="block text-sm font-medium text-gray-700 mb-2">
-                        Address <span class="text-red-500">*</span>
+                        {{ __('Address') }} <span class="text-red-500">*</span>
                     </label>
                     <textarea id="address"
                               name="address"
                               rows="2"
                               required
-                              placeholder="Enter the full address..."
+                              placeholder="{{ __('Enter the full address...') }}"
                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('address') border-red-500 @enderror">{{ old('address') }}</textarea>
                     @error('address')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -124,7 +124,7 @@
                 <!-- Coordinates -->
                 <div>
                     <label for="latitude" class="block text-sm font-medium text-gray-700 mb-2">
-                        Latitude
+                        {{ __('Latitude') }}
                     </label>
                     <input type="number"
                            id="latitude"
@@ -140,7 +140,7 @@
 
                 <div>
                     <label for="longitude" class="block text-sm font-medium text-gray-700 mb-2">
-                        Longitude
+                        {{ __('Longitude') }}
                     </label>
                     <input type="number"
                            id="longitude"
@@ -162,15 +162,15 @@
                         <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
                         </svg>
-                        Get Current Location
+                        {{ __('Get Current Location') }}
                     </button>
                 </div>
 
                 <!-- Image Upload -->
                 <div class="lg:col-span-2">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Place Image</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Place Image') }}</h3>
                     <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
-                        Upload Image (Optional)
+                        {{ __('Upload Image') }} (Optional)
                     </label>
                     <input type="file"
                            id="image"
@@ -180,7 +180,7 @@
                     @error('image')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
-                    <p class="mt-1 text-sm text-gray-500">Supported formats: JPG, PNG, GIF. Max size: 2MB</p>
+                    <p class="mt-1 text-sm text-gray-500">{{ __('Supported formats') }}: JPG, PNG, GIF. Max size: 2MB</p>
                 </div>
             </div>
 
@@ -188,11 +188,11 @@
             <div class="flex justify-end space-x-3 mt-8 pt-6 border-t border-gray-200">
                 <a href="{{ route('places.index') }}"
                    class="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 font-medium">
-                    Cancel
+                    {{ __('Cancel') }}
                 </a>
                 <button type="submit"
                         class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium">
-                    Create Place
+                    {{ __('Create Place') }}
                 </button>
             </div>
         </form>
