@@ -18,13 +18,24 @@ use App\Http\Controllers\EventPlanning\RundownController;
 use App\Http\Controllers\Location\PlaceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'registerProcess'])->name('register.process');
 
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'loginProcess'])->name('login.process');
+// // Route untuk halaman utama (landing page)
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
+// Route untuk Authentication (Guest only)
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'registerProcess'])->name('register.process');
+
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'loginProcess'])->name('login.process');
+});
+
+// Route untuk Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
@@ -48,3 +59,12 @@ Route::post('rundowns/{rundown}/activities', [ActivityController::class, 'store'
 Route::post('activities/reorder', [ActivityController::class, 'reorder'])->name('activities.reorder');
 Route::get('activities/places/available', [ActivityController::class, 'getAvailablePlaces'])->name('activities.places.available');
 Route::get('rundowns/{rundownId}/timeline', [ActivityController::class, 'getTimeline'])->name('activities.timeline');
+// Route yang butuh Authentication
+Route::middleware(['auth'])->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/home', [DashboardController::class, 'index'])->name('home');
+    
+    // Profile (kalau sudah ada ProfileController)
+    // Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+});
