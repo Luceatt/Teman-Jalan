@@ -863,9 +863,5 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
-        $this->call([
-            PlaceSeeder::class,
-            RundownSeeder::class,
-        ]);
     }
 }

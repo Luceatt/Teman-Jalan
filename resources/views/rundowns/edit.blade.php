@@ -79,6 +79,12 @@
                         <option value="draft" {{ old('status', $rundown->status) === 'draft' ? 'selected' : '' }}>
                             Draft
                         </option>
+                        <option value="planned" {{ old('status', $rundown->status) === 'planned' ? 'selected' : '' }}>
+                            Direncanakan
+                        </option>
+                        <option value="confirmed" {{ old('status', $rundown->status) === 'confirmed' ? 'selected' : '' }}>
+                            Dikonfirmasi
+                        </option>
                         <option value="published" {{ old('status', $rundown->status) === 'published' ? 'selected' : '' }}>
                             Diterbitkan
                         </option>

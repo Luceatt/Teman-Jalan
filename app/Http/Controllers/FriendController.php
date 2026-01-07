@@ -9,7 +9,7 @@ class FriendController extends Controller
     public function index()
     {
         $friends = Friendship::where('user_id', auth()->id())
-            ->where('status', 'accepted')
+            ->where('status', Friendship::STATUS_ACCEPTED)
             ->with('friend')
             ->get();
 

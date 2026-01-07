@@ -8,6 +8,9 @@ use App\Http\Controllers\FriendController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\EventHistoryController;
 use App\Http\Controllers\PlaceHistoryController;
+use App\Http\Controllers\RundownController;
+use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\PlaceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,10 +52,36 @@ Route::middleware('auth')->group(function () {
     // Friends
     Route::get('/friends', [FriendController::class, 'index'])->name('friends.index');
 
-    // History
+    // History (completed events)
     Route::prefix('history')->name('history.')->group(function () {
         Route::get('/', [HistoryController::class, 'index'])->name('index');
         Route::get('/events/{eventId}', [EventHistoryController::class, 'show'])->name('events.show');
         Route::get('/places/{placeId}', [PlaceHistoryController::class, 'show'])->name('places.show');
     });
+
+    // Places (Tempat) Management
+    Route::get('places/search', [PlaceController::class, 'search'])->name('places.search');
+    Route::resource('places', PlaceController::class);
+
+    // Rundown Management (trip planning)
+    Route::post('rundowns/{id}/publish', [RundownController::class, 'publish'])->name('rundowns.publish');
+    Route::post('rundowns/{id}/complete', [RundownController::class, 'complete'])->name('rundowns.complete');
+    Route::get('rundowns/{id}/map-data', [RundownController::class, 'getMapData'])->name('rundowns.map-data');
+    Route::get('rundowns-by-date', [RundownController::class, 'getByDate'])->name('rundowns.by-date');
+    Route::resource('rundowns', RundownController::class);
+
+    // Activity Management (within rundowns)
+    Route::prefix('rundowns/{rundown}')->name('rundowns.activities.')->group(function () {
+        Route::get('activities', [ActivityController::class, 'index'])->name('index');
+        Route::get('activities/create', [ActivityController::class, 'create'])->name('create');
+        Route::post('activities', [ActivityController::class, 'store'])->name('store');
+    });
+    
+    Route::prefix('activities')->name('activities.')->group(function () {
+        Route::post('reorder', [ActivityController::class, 'reorder'])->name('reorder');
+        Route::get('places/available', [ActivityController::class, 'getAvailablePlaces'])->name('places.available');
+    });
+    
+    Route::get('rundowns/{rundownId}/timeline', [ActivityController::class, 'getTimeline'])->name('activities.timeline');
+    Route::resource('activities', ActivityController::class)->except(['index', 'create', 'store']);
 });

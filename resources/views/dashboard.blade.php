@@ -1,235 +1,244 @@
 @extends('layouts.app')
 
+@section('title', 'Dashboard - Teman Jalan')
+
 @section('content')
-<div class="container-fluid py-4" style="background-color: #2d3748; min-height: calc(100vh - 120px);">
-    <div class="row justify-content-center">
-        <div class="col-xl-10 col-lg-11">
-            {{-- Welcome Section --}}
-            <div class="mb-4">
-                <h2 class="text-white mb-1">
-                    <i class="fas fa-hand-sparkles me-2"></i>
+<div class="py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {{-- Welcome Section --}}
+        <div class="mb-8 bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl p-8 shadow-lg text-white relative overflow-hidden">
+            <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
+            <div class="absolute bottom-0 left-0 -mb-4 -ml-4 w-32 h-32 bg-blue-500 opacity-10 rounded-full blur-xl"></div>
+            
+            <div class="relative z-10">
+                <h2 class="text-3xl font-bold mb-2 flex items-center">
+                    <i class="fas fa-hand-sparkles mr-3 text-yellow-400"></i>
                     Selamat Datang, {{ Auth::user()->name }}!
                 </h2>
-                <p class="text-white-50 mb-0">
-                    <i class="far fa-calendar me-2"></i>
+                <p class="text-gray-300 text-lg flex items-center">
+                    <i class="far fa-calendar mr-2"></i>
                     {{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM YYYY') }}
                 </p>
             </div>
+        </div>
 
-            {{-- Stats Cards Row --}}
-            <div class="row g-3 mb-4">
-                <div class="col-md-4">
-                    <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                        <div class="card-body text-white">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="text-white-50 mb-1">Total Events</h6>
-                                    <h3 class="mb-0">{{ $upcomingEvents->count() }}</h3>
-                                </div>
-                                <div class="bg-white bg-opacity-25 rounded-circle p-3">
-                                    <i class="fas fa-calendar-check fa-2x"></i>
-                                </div>
-                            </div>
+        {{-- Stats Cards Row --}}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {{-- Events Card --}}
+            <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                <div class="p-6">
+                    <div class="flex justify-between items-center text-white">
+                        <div>
+                            <p class="text-blue-100 text-sm font-medium uppercase tracking-wider mb-1">Total Events</p>
+                            <h3 class="text-3xl font-bold">{{ $upcomingEvents->count() }}</h3>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                        <div class="card-body text-white">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="text-white-50 mb-1">Total Places</h6>
-                                    <h3 class="mb-0">{{ $totalPlacesVisited }}</h3>
-                                </div>
-                                <div class="bg-white bg-opacity-25 rounded-circle p-3">
-                                    <i class="fas fa-map-marked-alt fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                        <div class="card-body text-white">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="text-white-50 mb-1">Total Friends</h6>
-                                    <h3 class="mb-0">{{ $totalFriends }}</h3>
-                                </div>
-                                <div class="bg-white bg-opacity-25 rounded-circle p-3">
-                                    <i class="fas fa-user-friends fa-2x"></i>
-                                </div>
-                            </div>
+                        <div class="bg-white bg-opacity-20 rounded-full p-3">
+                            <i class="fas fa-calendar-check text-2xl"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {{-- Main Dashboard Card --}}
-            <div class="card shadow-lg border-0" style="background-color: #1a202c; border-radius: 20px;">
-                <div class="card-body p-4">
-                    <div class="row g-4">
-                        {{-- Left Side - Upcoming Events (Fixed Height with Scroll) --}}
-                        <div class="col-lg-5">
-                            <div class="bg-light p-4" style="border-radius: 15px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); height: 100%;">
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="bg-white rounded-circle p-2 me-2 shadow-sm">
-                                        <i class="fas fa-calendar-alt fa-lg" style="color: #667eea;"></i>
+            {{-- Places Card --}}
+            <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                <div class="p-6">
+                    <div class="flex justify-between items-center text-white">
+                        <div>
+                            <p class="text-purple-100 text-sm font-medium uppercase tracking-wider mb-1">Total Places</p>
+                            <h3 class="text-3xl font-bold">{{ $totalPlacesVisited }}</h3>
+                        </div>
+                        <div class="bg-white bg-opacity-20 rounded-full p-3">
+                            <i class="fas fa-map-marked-alt text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Friends Card --}}
+            <div class="bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                <div class="p-6">
+                    <div class="flex justify-between items-center text-white">
+                        <div>
+                            <p class="text-cyan-100 text-sm font-medium uppercase tracking-wider mb-1">Total Friends</p>
+                            <h3 class="text-3xl font-bold">{{ $totalFriends }}</h3>
+                        </div>
+                        <div class="bg-white bg-opacity-20 rounded-full p-3">
+                            <i class="fas fa-user-friends text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {{-- Left Side - Upcoming Events --}}
+            <div class="lg:col-span-5">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 h-full overflow-hidden flex flex-col">
+                    <div class="p-6 border-b border-gray-100 bg-gray-50">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 text-blue-600 rounded-lg p-2 mr-3">
+                                <i class="fas fa-calendar-alt text-xl"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-lg font-bold text-gray-800">Upcoming Events</h5>
+                                <p class="text-sm text-gray-500">Event mendatang anda</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 overflow-y-auto flex-1 custom-scrollbar" style="max-height: 400px;">
+                        @if($upcomingEvents->count() > 0)
+                            <div class="space-y-4">
+                                @foreach($upcomingEvents as $event)
+                                    <div class="group bg-white border border-gray-100 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                                        <div class="flex items-start">
+                                            <div class="flex-shrink-0 bg-blue-50 text-blue-600 rounded-lg p-3 mr-4 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                                                <div class="text-center w-8">
+                                                    <span class="block text-xs font-bold uppercase">{{ $event->event_date->format('M') }}</span>
+                                                    <span class="block text-xl font-bold">{{ $event->event_date->format('d') }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow">
+                                                <h6 class="text-base font-bold text-gray-800 mb-1 group-hover:text-blue-600 transition-colors">{{ $event->event_name }}</h6>
+                                                <div class="flex items-center text-sm text-gray-500 mb-2">
+                                                    <i class="far fa-clock mr-2"></i>
+                                                    {{ $event->event_date->format('l, H:i') }}
+                                                </div>
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    {{ $event->status }}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h5 class="fw-bold mb-0">Upcoming Events</h5>
-                                        <small class="text-muted">Event mendatang</small>
-                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="h-64 flex flex-col justify-center items-center text-center p-6">
+                                <div class="bg-gray-50 rounded-full p-4 mb-4">
+                                    <i class="far fa-calendar-times text-gray-300 text-4xl"></i>
                                 </div>
-                                
-                                @if($upcomingEvents->count() > 0)
-                                    {{-- Fixed height container that shows ~2 events, scrollable if more --}}
-                                    <div class="event-list-container" style="height: 280px; overflow-y: auto; overflow-x: hidden;">
-                                        @foreach($upcomingEvents as $event)
-                                            <div class="card border-0 shadow-sm mb-2">
-                                                <div class="card-body p-3">
-                                                    <div class="d-flex align-items-start">
-                                                        <div class="bg-primary bg-opacity-10 rounded p-2 me-2">
-                                                            <i class="fas fa-calendar text-primary"></i>
-                                                        </div>
-                                                        <div class="flex-grow-1">
-                                                            <h6 class="mb-1 fw-bold">{{ $event->event_name }}</h6>
-                                                            <div class="text-muted small">
-                                                                <i class="far fa-clock me-1"></i>
-                                                                {{ $event->event_date->format('d M Y') }}
-                                                            </div>
-                                                            <div class="mt-1">
-                                                                <span class="badge bg-success small">{{ $event->status }}</span>
-                                                            </div>
-                                                        </div>
+                                <h6 class="text-gray-900 font-medium mb-1">Belum ada event</h6>
+                                <p class="text-gray-500 text-sm mb-4">Mulai rencanakan perjalanan anda sekarang!</p>
+                                <a href="{{ route('rundowns.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                                    <i class="fas fa-plus mr-2"></i>
+                                    Buat Event
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            {{-- Right Side - Tabbed Favorites --}}
+            <div class="lg:col-span-7">
+                <div x-data="{ activeTab: 'places' }" class="bg-white rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="p-2 border-b border-gray-100">
+                        <div class="flex space-x-2 bg-gray-50 p-1 rounded-xl">
+                            <button @click="activeTab = 'places'" 
+                                    :class="{ 'bg-white text-blue-600 shadow-sm': activeTab === 'places', 'text-gray-500 hover:text-gray-700': activeTab !== 'places' }"
+                                    class="flex-1 flex items-center justify-center py-2.5 px-4 rounded-lg text-sm font-medium transition-all duration-200">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                Favorite Places
+                            </button>
+                            <button @click="activeTab = 'friends'" 
+                                    :class="{ 'bg-white text-blue-600 shadow-sm': activeTab === 'friends', 'text-gray-500 hover:text-gray-700': activeTab !== 'friends' }"
+                                    class="flex-1 flex items-center justify-center py-2.5 px-4 rounded-lg text-sm font-medium transition-all duration-200">
+                                <i class="fas fa-user-friends mr-2"></i>
+                                Favorite Friends
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-6 flex-1 bg-gray-50 bg-opacity-50">
+                        {{-- Places Tab --}}
+                        <div x-show="activeTab === 'places'" 
+                             x-transition:enter="transition ease-out duration-300"
+                             x-transition:enter-start="opacity-0 translate-y-2"
+                             x-transition:enter-end="opacity-100 translate-y-0">
+                            @if($favoritePlaces->count() > 0)
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    @foreach($favoritePlaces as $place)
+                                        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all hover:-translate-y-1 duration-300">
+                                            <div class="flex items-start space-x-4">
+                                                <div class="bg-red-50 text-red-500 rounded-lg p-3 flex-shrink-0">
+                                                    <i class="fas fa-map-pin text-xl"></i>
+                                                </div>
+                                                <div class="flex-grow min-w-0">
+                                                    <h6 class="text-sm font-bold text-gray-900 truncate">{{ $place->place->name }}</h6>
+                                                    <p class="text-xs text-gray-500 mb-2 truncate">
+                                                        <i class="fas fa-tag mr-1"></i>
+                                                        {{ $place->place->category ?? 'General' }}
+                                                    </p>
+                                                    <div class="flex justify-between items-center">
+                                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700">
+                                                            <i class="fas fa-walking mr-1"></i>
+                                                            {{ $place->visit_count }}x
+                                                        </span>
+                                                        <span class="text-xs text-gray-400">
+                                                            {{ $place->last_visit_date ? \Carbon\Carbon::parse($place->last_visit_date)->diffForHumans() : 'Never' }}
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endforeach
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="text-center py-12">
+                                    <div class="bg-white rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4 shadow-sm">
+                                        <i class="fas fa-map-marked-alt text-gray-300 text-3xl"></i>
                                     </div>
-                                @else
-                                    <div class="text-center" style="height: 280px; display: flex; flex-direction: column; justify-content: center;">
-                                        <i class="far fa-calendar-times fa-3x mb-3 d-block" style="opacity: 0.3;"></i>
-                                        <p class="text-muted mb-3">Belum ada event</p>
-                                        <button class="btn btn-primary btn-sm shadow-sm">
-                                            <i class="fas fa-plus me-1"></i>
-                                            Buat Event
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
+                                    <h3 class="text-gray-900 font-medium mb-1">Belum ada tempat favorit</h3>
+                                    <p class="text-gray-500 text-sm mb-6">Jelajahi tempat baru dan tambahkan ke favorit!</p>
+                                    <a href="{{ route('places.index') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors shadow-sm">
+                                        <i class="fas fa-plus mr-2"></i>
+                                        Tambah Tempat
+                                    </a>
+                                </div>
+                            @endif
                         </div>
 
-                        {{-- Right Side - Tabbed Favorites --}}
-                        <div class="col-lg-7">
-                            <div class="bg-light p-4 h-100" style="border-radius: 15px;">
-                                {{-- Tab Navigation --}}
-                                <ul class="nav nav-pills mb-3" id="favoriteTabs" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link active" id="places-tab" data-bs-toggle="pill" 
-                                                data-bs-target="#places" type="button" role="tab">
-                                            <i class="fas fa-map-marker-alt me-2"></i>
-                                            Favorite Places
-                                        </button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="friends-tab" data-bs-toggle="pill" 
-                                                data-bs-target="#friends" type="button" role="tab">
-                                            <i class="fas fa-user-friends me-2"></i>
-                                            Favorite Friends
-                                        </button>
-                                    </li>
-                                </ul>
-
-                                {{-- Tab Content --}}
-                                <div class="tab-content" id="favoriteTabsContent">
-                                    {{-- Places Tab --}}
-                                    <div class="tab-pane fade show active" id="places" role="tabpanel">
-                                        @if($favoritePlaces->count() > 0)
-                                            <div class="row g-3">
-                                                @foreach($favoritePlaces as $place)
-                                                    <div class="col-md-6">
-                                                        <div class="card border-0 shadow-sm h-100 hover-lift">
-                                                            <div class="card-body">
-                                                                <div class="d-flex align-items-start">
-                                                                    <div class="bg-danger bg-opacity-10 rounded p-3 me-3">
-                                                                        <i class="fas fa-map-pin text-danger fa-lg"></i>
-                                                                    </div>
-                                                                    <div class="flex-grow-1">
-                                                                        <h6 class="mb-1 fw-bold">{{ $place->place->name }}</h6>
-                                                                        <p class="text-muted small mb-2">
-                                                                            <i class="fas fa-tag me-1"></i>
-                                                                            {{ $place->place->category ?? 'N/A' }}
-                                                                        </p>
-                                                                        <div class="d-flex justify-content-between align-items-center">
-                                                                            <span class="badge bg-primary">
-                                                                                <i class="fas fa-walking me-1"></i>
-                                                                                {{ $place->visit_count }}x kunjungan
-                                                                            </span>
-                                                                            <small class="text-muted">
-                                                                                {{ $place->last_visit_date ? \Carbon\Carbon::parse($place->last_visit_date)->diffForHumans() : 'N/A' }}
-                                                                            </small>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
+                        {{-- Friends Tab --}}
+                        <div x-show="activeTab === 'friends'"
+                             x-transition:enter="transition ease-out duration-300"
+                             x-transition:enter-start="opacity-0 translate-y-2"
+                             x-transition:enter-end="opacity-100 translate-y-0"
+                             style="display: none;">
+                            @if($favoriteFriends->count() > 0)
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    @foreach($favoriteFriends as $friendship)
+                                        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all hover:-translate-y-1 duration-300">
+                                            <div class="flex items-center space-x-4">
+                                                <div class="bg-gradient-to-br from-blue-400 to-blue-600 rounded-full h-12 w-12 flex items-center justify-center text-white shadow-sm flex-shrink-0">
+                                                    <span class="font-bold text-lg">{{ substr($friendship->friend->name, 0, 1) }}</span>
+                                                </div>
+                                                <div class="flex-grow min-w-0">
+                                                    <h6 class="text-sm font-bold text-gray-900 truncate">{{ $friendship->friend->name }}</h6>
+                                                    <p class="text-xs text-gray-500 mb-2 truncate">
+                                                        {{ $friendship->friend->email }}
+                                                    </p>
+                                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700">
+                                                        <i class="fas fa-route mr-1"></i>
+                                                        {{ $friendship->times_together }}x jalan bareng
+                                                    </span>
+                                                </div>
                                             </div>
-                                        @else
-                                            <div class="text-center py-5">
-                                                <i class="fas fa-map-marked-alt fa-3x mb-3 d-block" style="opacity: 0.3;"></i>
-                                                <p class="text-muted mb-3">Belum ada tempat favorit</p>
-                                                <button class="btn btn-danger btn-sm">
-                                                    <i class="fas fa-plus me-1"></i>
-                                                    Tambah Tempat
-                                                </button>
-                                            </div>
-                                        @endif
-                                    </div>
-
-                                    {{-- Friends Tab --}}
-                                    <div class="tab-pane fade" id="friends" role="tabpanel">
-                                        @if($favoriteFriends->count() > 0)
-                                            <div class="row g-3">
-                                                @foreach($favoriteFriends as $friendship)
-                                                    <div class="col-md-6">
-                                                        <div class="card border-0 shadow-sm h-100 hover-lift">
-                                                            <div class="card-body">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
-                                                                        <i class="fas fa-user text-primary fa-lg"></i>
-                                                                    </div>
-                                                                    <div class="flex-grow-1">
-                                                                        <h6 class="mb-1 fw-bold">{{ $friendship->friend->name }}</h6>
-                                                                        <p class="text-muted small mb-2">
-                                                                            {{ $friendship->friend->email }}
-                                                                        </p>
-                                                                        <span class="badge bg-success">
-                                                                            <i class="fas fa-route me-1"></i>
-                                                                            {{ $friendship->times_together }}x jalan bareng
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        @else
-                                            <div class="text-center py-5">
-                                                <i class="fas fa-users fa-3x mb-3 d-block" style="opacity: 0.3;"></i>
-                                                <p class="text-muted mb-3">Belum ada teman favorit</p>
-                                                <button class="btn btn-primary btn-sm">
-                                                    <i class="fas fa-user-plus me-1"></i>
-                                                    Tambah Teman
-                                                </button>
-                                            </div>
-                                        @endif
-                                    </div>
+                                        </div>
+                                    @endforeach
                                 </div>
-                            </div>
+                            @else
+                                <div class="text-center py-12">
+                                    <div class="bg-white rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4 shadow-sm">
+                                        <i class="fas fa-users text-gray-300 text-3xl"></i>
+                                    </div>
+                                    <h3 class="text-gray-900 font-medium mb-1">Belum ada teman favorit</h3>
+                                    <p class="text-gray-500 text-sm mb-6">Ajak temanmu bergabung dan jalan bersama!</p>
+                                    <a href="{{ url('/friends') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors shadow-sm">
+                                        <i class="fas fa-user-plus mr-2"></i>
+                                        Tambah Teman
+                                    </a>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -237,88 +246,4 @@
         </div>
     </div>
 </div>
-
-@push('styles')
-<style>
-    body {
-        background-color: #2d3748;
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
-    }
-    
-    body::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera */
-    }
-    
-    .hover-lift {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .hover-lift:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 16px rgba(0,0,0,0.15) !important;
-    }
-    
-    .nav-pills .nav-link {
-        color: #6c757d;
-        background-color: white;
-        border: 1px solid #dee2e6;
-        margin-right: 0.5rem;
-        transition: all 0.3s ease;
-    }
-    
-    .nav-pills .nav-link:hover {
-        background-color: #f8f9fa;
-        border-color: #0d6efd;
-        color: #0d6efd;
-    }
-    
-    .nav-pills .nav-link.active {
-        background-color: #0d6efd;
-        border-color: #0d6efd;
-    }
-    
-    .event-list-container::-webkit-scrollbar {
-        width: 4px;
-    }
-    
-    .event-list-container::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 10px;
-    }
-    
-    .event-list-container::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 10px;
-    }
-    
-    .event-list-container::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
-    
-    .card {
-        transition: all 0.3s ease;
-    }
-    
-    .badge {
-        font-weight: 500;
-        font-size: 0.75rem;
-    }
-    
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .card {
-        animation: fadeInUp 0.6s ease-out;
-    }
-</style>
-@endpush
 @endsection

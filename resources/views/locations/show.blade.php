@@ -30,8 +30,8 @@
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
                 <!-- Category Badge -->
                 @if($place->category)
-                    <div class="px-6 py-3 text-sm font-semibold text-white {{ $place->category->color_code ?? 'bg-gray-500' }}">
-                        {{ $place->category->name }}
+                    <div class="px-6 py-3 text-sm font-semibold text-white bg-blue-500">
+                        {{ $place->category}}
                     </div>
                 @endif
 
@@ -84,8 +84,8 @@
                     <!-- Timestamps -->
                     <div class="text-sm text-gray-500 border-t pt-4">
                         <div class="flex justify-between">
-                            <span>Created: {{ $place->created_at->format('M j, Y \a\t g:i A') }}</span>
-                            <span>Last Updated: {{ $place->updated_at->format('M j, Y \a\t g:i A') }}</span>
+                            <span>Created: {{ optional($place->created_at)->format('M j, Y \a\t g:i A') ?? 'N/A' }}</span>
+                            <span>Last Updated: {{ optional($place->updated_at)->format('M j, Y \a\t g:i A') ?? 'N/A' }}</span>
                         </div>
                     </div>
                 </div>

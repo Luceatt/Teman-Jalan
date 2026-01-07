@@ -78,6 +78,12 @@
                         <option value="draft" {{ old('status', 'draft') === 'draft' ? 'selected' : '' }}>
                             Draft
                         </option>
+                        <option value="planned" {{ old('status') === 'planned' ? 'selected' : '' }}>
+                            Direncanakan
+                        </option>
+                        <option value="confirmed" {{ old('status') === 'confirmed' ? 'selected' : '' }}>
+                            Dikonfirmasi
+                        </option>
                         <option value="published" {{ old('status') === 'published' ? 'selected' : '' }}>
                             Diterbitkan
                         </option>

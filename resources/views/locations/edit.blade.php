@@ -63,21 +63,21 @@
 
                 <!-- Category -->
                 <div>
-                    <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2">
+                    <label for="category" class="block text-sm font-medium text-gray-700 mb-2">
                         Category <span class="text-red-500">*</span>
                     </label>
-                    <select id="category_id"
-                            name="category_id"
+                    <select id="category"
+                            name="category"
                             required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('category_id') border-red-500 @enderror">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('category') border-red-500 @enderror">
                         <option value="">Select a category</option>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ old('category_id', $place->category_id) == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
+                            <option value="{{ $category }}" {{ old('category', $place->category) == $category ? 'selected' : '' }}>
+                                {{ $category }}
                             </option>
                         @endforeach
                     </select>
-                    @error('category_id')
+                    @error('category')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
@@ -343,7 +343,7 @@ document.getElementById('edit-place-form').addEventListener('submit', function(e
     const name = document.getElementById('name').value.trim();
     const description = document.getElementById('description').value.trim();
     const address = document.getElementById('address').value.trim();
-    const categoryId = document.getElementById('category_id').value;
+    const categoryId = document.getElementById('category').value;
 
     if (!name || !description || !address || !categoryId) {
         e.preventDefault();

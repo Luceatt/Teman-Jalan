@@ -22,7 +22,7 @@ class DashboardController extends Controller
                       });
             })
             ->where('event_date', '>=', now()->format('Y-m-d'))
-            ->whereIn('status', ['confirmed', 'planned'])
+            ->whereIn('status', [Event::STATUS_PLANNED, Event::STATUS_CONFIRMED, Event::STATUS_PUBLISHED])
             ->orderBy('event_date', 'asc')
             ->with(['creator', 'participants.user'])
             ->get();

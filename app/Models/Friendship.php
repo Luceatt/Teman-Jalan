@@ -19,6 +19,11 @@ class Friendship extends Model
         'times_together'
     ];
 
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_ACCEPTED = 'accepted';
+    public const STATUS_REJECTED = 'rejected';
+    public const STATUS_BLOCKED = 'blocked';
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

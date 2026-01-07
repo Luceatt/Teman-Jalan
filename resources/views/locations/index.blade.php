@@ -30,7 +30,7 @@
                 <select id="category" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">All Categories</option>
                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        <option value="{{ $category }}">{{ $category }}</option>
                     @endforeach
                 </select>
             </div>
@@ -58,8 +58,14 @@
                  data-place-id="{{ $place->id }}"
                  data-category-id="{{ $place->category_id }}">
                 @if($place->category)
-                    <div class="px-4 py-2 text-xs font-semibold text-white {{ $place->category->color_code ?? 'bg-gray-500' }}">
-                        {{ $place->category->name }}
+                    <div class="px-4 py-2 text-xs font-semibold text-white bg-blue-500">
+                        {{ $place->category }}
+                    </div>
+                @endif
+                
+                @if($place->image)
+                    <div class="h-48 w-full overflow-hidden">
+                        <img src="{{ asset('storage/' . $place->image) }}" alt="{{ $place->name }}" class="w-full h-full object-cover">
                     </div>
                 @endif
 
