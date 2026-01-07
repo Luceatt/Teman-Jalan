@@ -1,84 +1,74 @@
-<!doctype html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Profile</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('title', 'My Profile')
 
-</head>
+@section('content')
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-6">
+        <a href="{{ route('dashboard') }}" class="inline-flex items-center text-sm text-gray-500 hover:text-gray-700">
+            <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+        </a>
+    </div>
 
-<body class="d-flex align-items-center min-vh-100 py-5 bg-light">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="p-6 sm:p-8">
+            {{-- Header --}}
+            <div class="flex items-center mb-8 border-b border-gray-100 pb-8">
+                <div class="flex-shrink-0">
+                    <div class="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-4xl uppercase">
+                         {{ substr($user->name, 0, 1) }}
+                    </div>
+                </div>
+                <div class="ml-6">
+                    <h1 class="text-3xl font-bold text-gray-900 font-serif">{{ $user->name }}</h1>
+                    <p class="text-lg text-gray-500 font-serif">User</p>
+                </div>
+            </div>
 
-    <div class="container">
-        <div class="mb-5 text-center text-lg-start">
-            <a href="{{ url('/register') }}" class="btn btn-sm btn-outline-dark rounded-pill px-4">
-                &larr; Home
-            </a>
-        </div>
-
-        <div class="row justify-content-center">
-            <div class="col-lg-9">
-
-                <div class="card card-profile p-4 p-md-5">
-
-                    <div class="d-flex align-items-center mb-5 border-bottom pb-4">
-                        <div class="flex-shrink-0">
-                            <img src=""
-                                class="rounded-circle profile-avatar" alt="Avatar">
-                        </div>
-                        <div class="flex-grow-1 ms-4">
-                            <h3 class="serif-text fs-2 mb-0">{{ $user->name }}</h3>
-                            <p class="text-muted fs-5 mb-0" style="font-family: Georgia;">User</p>
-                        </div>
+            {{-- Form Fields (Read Only for now based on original view) --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                     <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-full bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               value="{{ $user->name }}" readonly>
                     </div>
 
-                    <form>
-                        <div class="row g-5">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-full bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               value="{{ $user->email }}" readonly>
+                    </div>
 
-                            <div class="col-md-6">
-                                <div class="mb-4">
-                                    <label class="label-custom">Username</label>
-                                    <input type="text" class="form-control form-control-pill"
-                                        value="{{ $user->name }}" readonly>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label class="label-custom">Email</label>
-                                    <input type="text" class="form-control form-control-pill"
-                                        value="{{ $user->email }}" readonly>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label class="label-custom">Favorite Place</label>
-                                    <input type="text" class="form-control form-control-pill"
-                                        value="" readonly>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="mb-4">
-                                    <label class="label-custom">Password</label>
-                                    <input type="password" class="form-control form-control-pill"
-                                        value="{{$user->password}}" readonly>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label class="label-custom">Favorite Friend</label>
-                                    <input type="text" class="form-control form-control-pill"
-                                        value="" readonly>
-                                </div>
-                            </div>
-
-                        </div>
-                    </form>
-
+                     <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Favorite Place</label>
+                        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-full bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               value="-" readonly>
+                    </div>
                 </div>
+
+                <div>
+                    <div class="mb-4">
+                         <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        {{-- Hiding actual hash in UI generally better, but keeping original logic --}}
+                         <input type="password" class="w-full px-4 py-2 border border-gray-300 rounded-full bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               value="********" readonly>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Favorite Friend</label>
+                         <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-full bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               value="-" readonly>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 flex justify-end">
+                <button type="button" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors shadow-sm">
+                    Edit Profile
+                </button>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+</div>
+@endsection

@@ -1,27 +1,28 @@
 @if($events && count($events) > 0)
-    <div class="event-list">
+    <div class="flex flex-col gap-5 mt-5">
         @foreach ($events as $event)
             {{-- Buat card menjadi clickable --}}
-            <a href="{{ route('history.events.show', $event['event_id']) }}" class="event-card-link">
-                <div class="event-card">
-                    <div class="card-left">
-                        <h3 class="event-title">{{ $event['title'] }}</h3>
-                        <p class="visited">{{ $event['places_visited'] }} Places Visited</p>
-                        <p class="with">With:</p>
-                        <div class="friends">
+            <a href="{{ route('history.events.show', $event['event_id']) }}" class="block no-underline transform transition duration-200 hover:-translate-y-0.5 group">
+                <div class="flex flex-col sm:flex-row justify-between items-stretch bg-white rounded-lg shadow p-6 group-hover:shadow-lg transition-shadow">
+                    <div class="flex-1 text-left flex flex-col justify-between">
+                        <h3 class="text-lg font-semibold m-0 text-gray-800">{{ $event['title'] }}</h3>
+                        <p class="text-sm text-gray-600 mt-1.5 mb-5">{{ $event['places_visited'] }} Places Visited</p>
+                        <p class="text-gray-500 mb-1">With:</p>
+                        <div class="flex gap-1.5 m-0">
                             @foreach ($event['friends'] as $friend)
-                                <img src="{{ $friend['profile_picture_url'] }}" alt="{{ $friend['name'] }}" class="friend-avatar">
+                                <img src="{{ $friend['profile_picture_url'] }}" alt="{{ $friend['name'] }}" 
+                                     class="w-9 h-9 rounded-full object-cover border-2 border-white shadow-sm">
                             @endforeach
                         </div>
                     </div>
 
-                    <div class="card-right">
-                        <div class="date-box">
+                    <div class="text-right flex flex-col justify-between items-end mt-4 sm:mt-0">
+                        <div class="border border-gray-300 bg-[#fdf73e] rounded px-2.5 py-1 font-semibold m-0 text-gray-800">
                             {{ \Carbon\Carbon::parse($event['date'])->format('d/m/Y') }}
                         </div>
-                        <div class="spent">
-                            <p>You Spent:</p>
-                            <p class="amount">Rp{{ number_format($event['spent'], 0, ',', '.') }},00</p>
+                        <div class="text-right m-0">
+                            <p class="m-0 mb-1 text-gray-500">You Spent:</p>
+                            <p class="text-blue-600 font-bold text-base m-0">Rp{{ number_format($event['spent'], 0, ',', '.') }},00</p>
                         </div>
                     </div>
                 </div>
@@ -29,124 +30,5 @@
         @endforeach
     </div>
 @else
-    <p class="no-history">No History Yet</p>
+    <p class="text-center text-gray-400 mt-10">No History Yet</p>
 @endif
-
-<style>
-.event-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-top: 20px;
-}
-
-/* Wrapper link agar seluruh card bisa diklik */
-.event-card-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.event-card-link:hover {
-    transform: translateY(-2px);
-}
-
-.event-card-link:hover .event-card {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.event-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    padding: 30px;
-    cursor: pointer;
-    transition: box-shadow 0.2s ease;
-}
-
-.card-left {
-    flex: 1;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.event-title {
-    font-size: 18px;
-    font-weight: 600;
-    margin: 0;
-    color: #333;
-}
-
-.visited {
-    color: #555;
-    font-size: 14px;
-    margin: 6px 0 20px 0;
-}
-
-.with {
-    margin: 0 0 4px 0;
-    color: #666;
-}
-
-.friends {
-    display: flex;
-    gap: 6px;
-    margin: 0;
-}
-
-.friend-avatar {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #fff;
-    box-shadow: 0 0 3px rgba(0,0,0,0.2);
-}
-
-.card-right {
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-end;
-}
-
-.date-box {
-    border: 1px solid #ccc;
-    background: #fdf73eff;
-    border-radius: 6px;
-    padding: 5px 10px;
-    font-weight: 600;
-    margin: 0;
-    color: #333;
-}
-
-.spent {
-    text-align: right;
-    margin: 0;
-}
-
-.spent p {
-    margin: 0 0 4px 0;
-    color: #666;
-}
-
-.spent .amount {
-    color: #007bff;
-    font-weight: 700;
-    font-size: 16px;
-    margin: 0;
-}
-
-.no-history {
-    text-align: center;
-    color: #999;
-    margin-top: 40px;
-}
-</style>

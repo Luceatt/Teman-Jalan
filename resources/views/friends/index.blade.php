@@ -1,82 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Friend List</title>
+@extends('layouts.app')
 
-    <!-- Bootstrap 5 CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('title', 'Friend List')
 
-    <style>
-        body {
-            background-color: #f5f5f5;
-        }
+@section('content')
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-3xl font-bold text-center mb-8 text-gray-900">Friend List</h1>
 
-        .friend-card {
-            background-color: #e0e0e0;
-            padding: 20px;
-            text-align: center;
-            border-radius: 4px;
-        }
-
-        .avatar {
-            width: 80px;
-            height: 80px;
-            background-color: black;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-        }
-
-        .friend-name {
-            font-weight: bold;
-        }
-
-        .times {
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-
-        .btn-custom {
-            background-color: #a8d5b5;
-            border: none;
-            font-size: 14px;
-        }
-
-        .btn-custom:hover {
-            background-color: #95c9a5;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container py-5">
-    <h1 class="text-center mb-5">Friend List</h1>
-
-    <div class="row g-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         @forelse ($friends as $f)
-            <div class="col-md-3">
-                <div class="friend-card">
-                    <div class="avatar"></div>
+            <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition-shadow duration-200">
+                <div class="w-20 h-20 bg-gray-800 rounded-full mb-4 flex items-center justify-center text-white text-2xl font-bold">
+                    {{-- Avatar placeholder or initial --}}
+                    {{ substr($f->friend->name ?? '?', 0, 1) }}
+                </div>
 
-                    <div class="friend-name">
-                        {{ $f->friend->name }}
-                    </div>
+                <div class="font-bold text-lg text-gray-900 mb-2">
+                    {{ $f->friend->name }}
+                </div>
 
-                    <div class="times">
-                        Went out together {{ $f->times_together ?? 0 }} times
-                    </div>
+                <div class="text-sm text-gray-500 mb-4">
+                    Went out together <span class="font-semibold text-gray-700">{{ $f->times_together ?? 0 }}</span> times
+                </div>
 
-                    <div class="d-flex justify-content-between">
-                        <a href="#" class="btn btn-custom btn-sm">History</a>
-                        <a href="#" class="btn btn-custom btn-sm">Invites</a>
-                    </div>
+                <div class="flex space-x-2 w-full mt-auto">
+                    <a href="#" class="flex-1 bg-green-100 text-green-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-green-200 transition-colors">
+                        History
+                    </a>
+                    <a href="#" class="flex-1 bg-green-100 text-green-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-green-200 transition-colors">
+                        Invites
+                    </a>
                 </div>
             </div>
         @empty
-            <p class="text-center">No friends found.</p>
+            <div class="col-span-full text-center py-12">
+                <div class="inline-flex items-center justify-center p-4 bg-gray-100 rounded-full mb-4">
+                    <i class="fas fa-user-friends text-gray-400 text-3xl"></i>
+                </div>
+                <p class="text-gray-500 text-lg">No friends found yet.</p>
+                <button class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                    Find Friends
+                </button>
+            </div>
         @endforelse
     </div>
 </div>
-
-</body>
-</html>
+@endsection

@@ -1,168 +1,235 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>@yield('title', 'Teman Jalan')</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-            background-color: #f9f9f9;
-        }
-        .btn {
-            display: inline-block;
-            margin: 10px;
-            padding: 10px 25px;
-            background-color: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .btn:hover {
-            background-color: #2980b9;
-        }
-        .back {
-            display: inline-block;
-            margin-bottom: 20px;
-            text-decoration: none;
-            color: #555;
-        }
-        .back:hover {
-            color: black;
-        }
-        h1, h2 {
-            margin-bottom: 20px;
-        }
-    </style>
-</head>
-<body>
-    {{-- Bagian konten utama tiap halaman --}}
-    @yield('content')
-</body>
-
-</html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Teman Jalan') - Place Management</title>
+    <title>@yield('title', 'Teman Jalan')</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700&display=swap" rel="stylesheet" />
 
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- jQuery (for AJAX functionality) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
     <!-- Tailwind CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <!-- Places JavaScript -->
-    <script>
-        window.routes = {
-            placesIndex: '{{ route("places.index") }}',
-            placesSearch: '{{ route("places.search") }}',
-            placesNearby: '{{ route("places.nearby") }}'
-        };
-    </script>
-    @vite(['resources/js/places.js'])
 
     <!-- Custom styles -->
     @stack('styles')
 </head>
-<body class="font-sans antialiased bg-gray-100">
-    <div class="min-h-screen">
+<body class="font-sans antialiased bg-gray-50 text-gray-900">
+    <div class="min-h-screen flex flex-col">
         <!-- Navigation -->
-        <nav class="bg-white shadow-sm border-b">
+        <nav class="bg-white shadow-sm border-b border-gray-200 z-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <!-- Logo and Brand -->
                     <div class="flex items-center">
-                        <a href="{{ route('places.index') }}" class="flex items-center">
-                            <i class="fas fa-map-marked-alt text-blue-600 text-2xl mr-3"></i>
-                            <span class="font-bold text-xl text-gray-900">Teman Jalan</span>
+                        <a href="{{ route('dashboard') }}" class="flex items-center group">
+                            <div class="bg-blue-600 text-white p-2 rounded-lg mr-3 group-hover:bg-blue-700 transition-colors duration-200">
+                                <i class="fas fa-map-marked-alt text-xl"></i>
+                            </div>
+                            <span class="font-bold text-xl text-gray-900 tracking-tight">Teman Jalan</span>
                         </a>
                     </div>
 
-                    <!-- Navigation Links -->
+                    <!-- Desktop Navigation -->
                     <div class="hidden md:flex items-center space-x-8">
-                        <a href="{{ route('places.index') }}"
-                           class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('places.*') ? 'text-blue-600 bg-blue-50' : '' }}">
-                            <i class="fas fa-map-marker-alt mr-2"></i>Tempat
-                        </a>
-                        <a href="{{ route('rundowns.index') }}"
-                           class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('rundowns.*') ? 'text-blue-600 bg-blue-50' : '' }}">
-                            <i class="fas fa-clipboard-list mr-2"></i>Rundown
-                        </a>
+                        @auth
+                            <a href="{{ route('dashboard') }}"
+                               class="text-sm font-medium transition-colors duration-150 {{ request()->routeIs('dashboard') ? 'text-blue-600' : 'text-gray-500 hover:text-gray-900' }}">
+                                Dashboard
+                            </a>
+                            <a href="{{ route('places.index') }}"
+                               class="text-sm font-medium transition-colors duration-150 {{ request()->routeIs('places.*') ? 'text-blue-600' : 'text-gray-500 hover:text-gray-900' }}">
+                                Tempat
+                            </a>
+                            <a href="{{ route('rundowns.index') }}"
+                               class="text-sm font-medium transition-colors duration-150 {{ request()->routeIs('rundowns.*') ? 'text-blue-600' : 'text-gray-500 hover:text-gray-900' }}">
+                                Rundown
+                            </a>
+                            <a href="{{ url('/friends') }}"
+                               class="text-sm font-medium transition-colors duration-150 {{ request()->is('friends*') ? 'text-blue-600' : 'text-gray-500 hover:text-gray-900' }}">
+                                Teman
+                            </a>
+                            <a href="{{ route('history.index') }}"
+                               class="text-sm font-medium transition-colors duration-150 {{ request()->routeIs('history.*') ? 'text-blue-600' : 'text-gray-500 hover:text-gray-900' }}">
+                                Riwayat
+                            </a>
+                        @endauth
+                    </div>
+
+                    <!-- User Menu / Auth Links -->
+                    <div class="hidden md:flex items-center">
+                        @auth
+                            <div class="relative ml-3" id="user-menu-container">
+                                <div>
+                                    <button type="button" id="user-menu-button"
+                                            class="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                            aria-expanded="false" aria-haspopup="true">
+                                        <span class="sr-only">Open user menu</span>
+                                        <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold uppercase">
+                                            {{ substr(Auth::user()->name, 0, 1) }}
+                                        </div>
+                                        <span class="ml-3 text-gray-700 font-medium">{{ Auth::user()->name }}</span>
+                                        <i class="fas fa-chevron-down ml-2 text-xs text-gray-400"></i>
+                                    </button>
+                                </div>
+                                <div id="user-menu-dropdown"
+                                     class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                     role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                                    <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                        <i class="fas fa-user mr-2 w-4"></i> Profile
+                                    </a>
+                                    <div class="border-t border-gray-100 my-1"></div>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50" role="menuitem">
+                                            <i class="fas fa-sign-out-alt mr-2 w-4"></i> Sign out
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        @else
+                            <div class="space-x-4">
+                                <a href="{{ route('login') }}" class="text-gray-500 hover:text-gray-900 font-medium text-sm">Log in</a>
+                                <a href="{{ route('register') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm">Sign up</a>
+                            </div>
+                        @endauth
                     </div>
 
                     <!-- Mobile menu button -->
                     <div class="md:hidden flex items-center">
                         <button type="button" id="mobile-menu-button"
-                                class="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600">
-                            <i class="fas fa-bars text-xl"></i>
+                                class="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            <span class="sr-only">Open main menu</span>
+                            <i class="fas fa-bars text-xl" id="menu-icon-open"></i>
+                            <i class="fas fa-times text-xl hidden" id="menu-icon-close"></i>
                         </button>
                     </div>
                 </div>
+            </div>
 
-                <!-- Mobile Navigation Menu -->
-                <div id="mobile-menu" class="md:hidden hidden">
-                    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
+            <!-- Mobile Navigation Menu -->
+            <div class="hidden md:hidden border-t border-gray-200" id="mobile-menu">
+                <div class="space-y-1 pt-2 pb-3 px-2">
+                    @auth
+                        <a href="{{ route('dashboard') }}"
+                           class="block rounded-md px-3 py-2 text-base font-medium {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+                            Dashboard
+                        </a>
                         <a href="{{ route('places.index') }}"
-                           class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('places.*') ? 'text-blue-600 bg-blue-50' : '' }}">
-                            <i class="fas fa-map-marker-alt mr-2"></i>Tempat
+                           class="block rounded-md px-3 py-2 text-base font-medium {{ request()->routeIs('places.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+                            Tempat
                         </a>
                         <a href="{{ route('rundowns.index') }}"
-                           class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('rundowns.*') ? 'text-blue-600 bg-blue-50' : '' }}">
-                            <i class="fas fa-clipboard-list mr-2"></i>Rundown
+                           class="block rounded-md px-3 py-2 text-base font-medium {{ request()->routeIs('rundowns.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+                            Rundown
                         </a>
-                    </div>
+                        <a href="{{ url('/friends') }}"
+                           class="block rounded-md px-3 py-2 text-base font-medium {{ request()->is('friends*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+                            Teman
+                        </a>
+                         <a href="{{ route('history.index') }}"
+                           class="block rounded-md px-3 py-2 text-base font-medium {{ request()->routeIs('history.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+                            Riwayat
+                        </a>
+                    @endauth
                 </div>
+                
+                @auth
+                    <div class="border-t border-gray-200 pt-4 pb-4">
+                        <div class="flex items-center px-4">
+                            <div class="flex-shrink-0">
+                                <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold uppercase text-lg">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                </div>
+                            </div>
+                            <div class="ml-3">
+                                <div class="text-base font-medium text-gray-800">{{ Auth::user()->name }}</div>
+                                <div class="text-sm font-medium text-gray-500">{{ Auth::user()->email }}</div>
+                            </div>
+                        </div>
+                        <div class="mt-3 space-y-1 px-2">
+                            <a href="{{ route('profile') }}"
+                               class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+                                Your Profile
+                            </a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="block w-full text-left rounded-md px-3 py-2 text-base font-medium text-red-600 hover:bg-gray-50 hover:text-red-700">
+                                    Sign out
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @else
+                    <div class="border-t border-gray-200 pt-4 pb-4">
+                         <div class="mt-3 space-y-1 px-2">
+                            <a href="{{ route('login') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Log in</a>
+                            <a href="{{ route('register') }}" class="block rounded-md px-3 py-2 text-base font-medium text-blue-600 hover:bg-blue-50 hover:text-blue-700">Sign up</a>
+                        </div>
+                    </div>
+                @endauth
             </div>
         </nav>
 
         <!-- Page Content -->
         <main class="flex-1">
-            <!-- Flash Messages -->
+             <!-- Flash Messages -->
             @if(session('success'))
-                <div id="success-message" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
-                        <span class="block sm:inline">{{ session('success') }}</span>
-                        <button onclick="document.getElementById('success-message').remove()"
-                                class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                <div id="flash-success" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+                    <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-md shadow-sm flex justify-between items-start">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-check-circle text-green-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-green-700">{{ session('success') }}</p>
+                            </div>
+                        </div>
+                        <button onclick="document.getElementById('flash-success').remove()" class="ml-4 text-green-400 hover:text-green-500">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
                 </div>
             @endif
 
-            @if(session('error'))
-                <div id="error-message" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-                        <span class="block sm:inline">{{ session('error') }}</span>
-                        <button onclick="document.getElementById('error-message').remove()"
-                                class="absolute top-0 bottom-0 right-0 px-4 py-3">
+            @if(session('error') || session('loginError'))
+                <div id="flash-error" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+                    <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-md shadow-sm flex justify-between items-start">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-circle text-red-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-red-700">{{ session('error') ?? session('loginError') }}</p>
+                            </div>
+                        </div>
+                        <button onclick="document.getElementById('flash-error').remove()" class="ml-4 text-red-400 hover:text-red-500">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
                 </div>
             @endif
 
-            <!-- Main Content -->
             @yield('content')
         </main>
 
         <!-- Footer -->
-        <footer class="bg-white border-t mt-auto">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                <div class="text-center text-sm text-gray-500">
-                    <p>&copy; {{ date('Y') }} Teman Jalan - Place Management System. Built with Laravel.</p>
+        <footer class="bg-white border-t border-gray-200 mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <p class="text-sm text-gray-500">&copy; {{ date('Y') }} Teman Jalan. All rights reserved.</p>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-gray-500">Privacy Policy</a>
+                        <a href="#" class="text-gray-400 hover:text-gray-500">Terms of Service</a>
+                    </div>
                 </div>
             </div>
         </footer>
@@ -170,203 +237,55 @@
 
     <!-- Scripts -->
     <script>
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-button')?.addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const openIcon = document.getElementById('menu-icon-open');
+            const closeIcon = document.getElementById('menu-icon-close');
 
-        // Auto-hide flash messages after 5 seconds
-        setTimeout(() => {
-            document.getElementById('success-message')?.remove();
-            document.getElementById('error-message')?.remove();
-        }, 5000);
-
-        // Global notification function
-        window.showNotification = function(message, type = 'info') {
-            const colors = {
-                success: 'bg-green-600',
-                error: 'bg-red-600',
-                warning: 'bg-yellow-600',
-                info: 'bg-blue-600'
-            };
-
-            const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-md text-white z-50 ${colors[type]}`;
-            notification.innerHTML = `
-                <div class="flex items-center">
-                    <span class="flex-1">${message}</span>
-                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            `;
-
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        };
-
-        // Confirm dialog for destructive actions
-        window.confirmAction = function(message, callback) {
-            if (confirm(message)) {
-                callback();
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                    openIcon.classList.toggle('hidden');
+                    closeIcon.classList.toggle('hidden');
+                });
             }
-        };
-    </script>
 
-    @stack('scripts')
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    
-    <title>@yield('title', 'Dashboard') - Teman Jalan</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
-        }
-        
-    </style>
-    
-    @stack('styles')
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('dashboard') }}">
-                <i class="fas fa-map-marked-alt me-2"></i>
-                Teman Jalan
-            </a>
+            // User dropdown toggle
+            const userMenuBtn = document.getElementById('user-menu-button');
+            const userMenuDropdown = document.getElementById('user-menu-dropdown');
             
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                            <i class="fas fa-home me-1"></i> Dashboard
-                        </a>
-                    </li>
-                    {{-- Uncomment when controllers are ready --}}
-                    {{-- <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('places.*') ? 'active' : '' }}" href="{{ route('places.index') }}">
-                            <i class="fas fa-map-marker-alt me-1"></i> Tempat
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('rundowns.*') ? 'active' : '' }}" href="{{ route('rundowns.index') }}">
-                            <i class="fas fa-clipboard-list me-1"></i> Rundown
-                        </a>
-                    </li> --}}
-                </ul>
-                
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle me-1"></i>
-                            {{ Auth::user()->name }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user me-2"></i> Profile
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form action="{{ route('logout') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item text-danger">
-                                        <i class="fas fa-sign-out-alt me-2"></i> Logout
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+            if (userMenuBtn && userMenuDropdown) {
+                userMenuBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userMenuDropdown.classList.toggle('hidden');
+                });
 
-    <!-- Flash Messages -->
-    @if(session('success'))
-        <div class="container-fluid mt-3">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i>
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        </div>
-    @endif
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!userMenuBtn.contains(e.target) && !userMenuDropdown.contains(e.target)) {
+                        userMenuDropdown.classList.add('hidden');
+                    }
+                });
+            }
 
-    @if(session('error'))
-        <div class="container-fluid mt-3">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i>
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        </div>
-    @endif
-
-    @if(session('loginError'))
-        <div class="container-fluid mt-3">
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-triangle me-2"></i>
-                {{ session('loginError') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        </div>
-    @endif
-
-    <!-- Main Content -->
-    <main>
-        @yield('content')
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-3 mt-5">
-        <div class="container">
-            <p class="mb-0">&copy; {{ date('Y') }} Teman Jalan</p>
-        </div>
-    </footer>
-
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- jQuery (optional, jika butuh) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    
-    <script>
-        // Auto-hide alerts after 5 seconds
-        setTimeout(() => {
-            let alerts = document.querySelectorAll('.alert');
-            alerts.forEach(alert => {
-                let bsAlert = new bootstrap.Alert(alert);
-                bsAlert.close();
-            });
-        }, 5000);
+            // Auto-hide flash messages
+            setTimeout(() => {
+                const flashSuccess = document.getElementById('flash-success');
+                const flashError = document.getElementById('flash-error');
+                if (flashSuccess) {
+                    flashSuccess.style.transition = 'opacity 1s';
+                    flashSuccess.style.opacity = '0';
+                    setTimeout(() => flashSuccess.remove(), 1000);
+                }
+                if (flashError) {
+                    flashError.style.transition = 'opacity 1s';
+                    flashError.style.opacity = '0';
+                    setTimeout(() => flashError.remove(), 1000);
+                }
+            }, 5000);
+        });
     </script>
     
     @stack('scripts')
