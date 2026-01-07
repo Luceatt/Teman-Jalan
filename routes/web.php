@@ -27,7 +27,8 @@ use App\Http\Controllers\DashboardController;
 // });
 
 // Route untuk Authentication (Guest only)
-Route::middleware('guest')->group(function () {
+Route::middleware('guest')->group(function () {use App\Http\Controllers\FriendController;
+
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'registerProcess'])->name('register.process');
 
@@ -38,6 +39,7 @@ Route::middleware('guest')->group(function () {
 // Route untuk Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::middleware('auth')->get('/friends', [FriendController::class, 'index']);
 
 // Place management routes
 Route::resource('places', PlaceController::class);
