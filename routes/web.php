@@ -11,6 +11,7 @@ use App\Http\Controllers\PlaceHistoryController;
 use App\Http\Controllers\RundownController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\PlaceController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\LocaleController;
 
 /*
@@ -75,10 +76,18 @@ Route::middleware('auth')->group(function () {
     Route::resource('rundowns', RundownController::class);
 
     // Activity Management (within rundowns)
-    Route::prefix('rundowns/{rundown}')->name('rundowns.activities.')->group(function () {
-        Route::get('activities', [ActivityController::class, 'index'])->name('index');
-        Route::get('activities/create', [ActivityController::class, 'create'])->name('create');
-        Route::post('activities', [ActivityController::class, 'store'])->name('store');
+    Route::prefix('rundowns/{rundown}')->name('rundowns.')->group(function () {
+        Route::get('activities', [ActivityController::class, 'index'])->name('activities.index');
+        Route::get('activities/create', [ActivityController::class, 'create'])->name('activities.create');
+        Route::post('activities', [ActivityController::class, 'store'])->name('activities.store');
+        
+        // Expense Routes
+        Route::get('expenses', [ExpenseController::class, 'index'])->name('expenses.index');
+        Route::get('expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
+        Route::post('expenses', [ExpenseController::class, 'store'])->name('expenses.store');
+        Route::get('expenses/{expense}/edit', [ExpenseController::class, 'edit'])->name('expenses.edit');
+        Route::put('expenses/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
+        Route::delete('expenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
     });
     
     Route::prefix('activities')->name('activities.')->group(function () {

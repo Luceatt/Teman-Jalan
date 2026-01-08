@@ -26,6 +26,10 @@
                     @else bg-gray-100 text-gray-800 @endif">
                     {{ $rundown->getStatusLabel() }}
                 </span>
+                <a href="{{ route('rundowns.expenses.index', $rundown->id) }}"
+                   class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium">
+                    {{ __('Biaya') }}
+                </a>
                 <a href="{{ route('rundowns.edit', $rundown->id) }}"
                    class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium">
                     {{ __('Edit') }}
