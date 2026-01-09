@@ -19,6 +19,10 @@ class Friendship extends Model
         'times_together'
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
+
     public const STATUS_PENDING = 'pending';
     public const STATUS_ACCEPTED = 'accepted';
     public const STATUS_REJECTED = 'rejected';

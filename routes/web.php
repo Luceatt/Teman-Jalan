@@ -56,6 +56,10 @@ Route::middleware('auth')->group(function () {
 
     // Friends
     Route::get('/friends', [FriendController::class, 'index'])->name('friends.index');
+    Route::get('/friends/search', [FriendController::class, 'search'])->name('friends.search');
+    Route::post('/friends', [FriendController::class, 'store'])->name('friends.store');
+    Route::patch('/friends/{friendship}', [FriendController::class, 'update'])->name('friends.update');
+    Route::delete('/friends/{friendship}', [FriendController::class, 'destroy'])->name('friends.destroy');
 
     // History (completed events)
     Route::prefix('history')->name('history.')->group(function () {

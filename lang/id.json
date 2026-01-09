@@ -146,5 +146,20 @@
     "No activities yet": "Belum ada aktivitas",
     "Add the first activity for this rundown.": "Tambahkan aktivitas pertama untuk rundown ini.",
     "Add activities with locations to view map": "Tambahkan aktivitas dengan lokasi untuk melihat peta",
-    "Favorite Place": "Tempat Favorit"
+    "Favorite Place": "Tempat Favorit",
+    "Friend Requests": "Permintaan Pertemanan",
+    "Sent Requests": "Permintaan Terkirim",
+    "No friends yet": "Belum ada teman",
+    "Search for your friends above to add them to your list within TemanJalan.": "Cari temanmu di atas untuk menambahkannya ke daftarmu di TemanJalan.",
+    "Accept": "Terima",
+    "Ignore": "Abaikan",
+    "Cancel Request": "Batalkan Permintaan",
+    "Search Results": "Hasil Pencarian",
+    "You cannot add yourself.": "Anda tidak dapat menambahkan diri sendiri.",
+    "Friendship request already exists or you are already friends.": "Permintaan pertemanan sudah ada atau Anda sudah berteman.",
+    "Friend request sent!": "Permintaan pertemanan terkirim!",
+    "Friend request accepted!": "Permintaan pertemanan diterima!",
+    "Friend removed/request cancelled.": "Teman dihapus/permintaan dibatalkan.",
+    "No users found matching": "Tidak ada pengguna ditemukan yang cocok dengan",
+    "Are you sure you want to remove this friend?": "Apakah Anda yakin ingin menghapus teman ini?"
 }

@@ -146,5 +146,20 @@
     "No activities yet": "No activities yet",
     "Add the first activity for this rundown.": "Add the first activity for this rundown.",
     "Add activities with locations to view map": "Add activities with locations to view map",
-    "Favorite Place": "Favorite Place"
+    "Favorite Place": "Favorite Place",
+    "Friend Requests": "Friend Requests",
+    "Sent Requests": "Sent Requests",
+    "No friends yet": "No friends yet",
+    "Search for your friends above to add them to your list within TemanJalan.": "Search for your friends above to add them to your list within TemanJalan.",
+    "Accept": "Accept",
+    "Ignore": "Ignore",
+    "Cancel Request": "Cancel Request",
+    "Search Results": "Search Results",
+    "You cannot add yourself.": "You cannot add yourself.",
+    "Friendship request already exists or you are already friends.": "Friendship request already exists or you are already friends.",
+    "Friend request sent!": "Friend request sent!",
+    "Friend request accepted!": "Friend request accepted!",
+    "Friend removed/request cancelled.": "Friend removed/request cancelled.",
+    "No users found matching": "No users found matching",
+    "Are you sure you want to remove this friend?": "Are you sure you want to remove this friend?"
 }
