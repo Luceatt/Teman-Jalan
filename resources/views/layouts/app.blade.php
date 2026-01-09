@@ -145,19 +145,19 @@
                         </a>
                         <a href="{{ route('places.index') }}"
                            class="block rounded-md px-3 py-2 text-base font-medium {{ request()->routeIs('places.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-                            Tempat
+                            {{ __('Places') }}
                         </a>
                         <a href="{{ route('rundowns.index') }}"
                            class="block rounded-md px-3 py-2 text-base font-medium {{ request()->routeIs('rundowns.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-                            Rundown
+                            {{ __('Rundown') }}
                         </a>
                         <a href="{{ url('/friends') }}"
                            class="block rounded-md px-3 py-2 text-base font-medium {{ request()->is('friends*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-                            Teman
+                            {{ __('Friends') }}
                         </a>
                          <a href="{{ route('history.index') }}"
                            class="block rounded-md px-3 py-2 text-base font-medium {{ request()->routeIs('history.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-                            Riwayat
+                            {{ __('History') }}
                         </a>
                     @endauth
                 </div>
@@ -178,7 +178,7 @@
                         <div class="mt-3 space-y-1 px-2">
                             <a href="{{ route('profile') }}"
                                class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                                Your Profile
+                                {{ __('Profile') }}
                             </a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf

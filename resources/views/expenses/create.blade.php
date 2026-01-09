@@ -127,7 +127,7 @@
                                         </span>
                                     </div>
                                 </label>
-                            @endforeach
+                            @endif
                         </div>
                         @error('paid_by_user_id')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

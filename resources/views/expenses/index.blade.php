@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Manajemen Biaya - ' . $event->title)
+@section('title', __('Cost Management') . ' - ' . $event->title)
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
@@ -9,19 +9,19 @@
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
             </svg>
-            Kembali ke Rundown
+            {{ __('Back to Rundown') }}
         </a>
         
         <div class="flex justify-between items-start">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900">Manajemen Biaya</h1>
+                <h1 class="text-2xl font-bold text-gray-900">{{ __('Cost Management') }}</h1>
                 <p class="text-gray-600">Event: {{ $event->title }}</p>
             </div>
             <a href="{{ route('rundowns.expenses.create', $event->id) }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
-                Tambah Pengeluaran
+                {{ __('Add Expense') }}
             </a>
         </div>
     </div>
@@ -29,11 +29,11 @@
     <!-- Summary Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500">
-            <p class="text-sm font-medium text-gray-500">Total Pengeluaran Event</p>
+            <p class="text-sm font-medium text-gray-500">{{ __('Total Event Expenses') }}</p>
             <p class="text-2xl font-bold text-gray-900 mt-1">Rp {{ number_format($totalExpenses, 0, ',', '.') }}</p>
         </div>
         <div class="bg-white rounded-lg shadow p-6 border-l-4 border-green-500">
-            <p class="text-sm font-medium text-gray-500">Total Tanggungan Saya</p>
+            <p class="text-sm font-medium text-gray-500">{{ __('My Total Share') }}</p>
             <p class="text-2xl font-bold text-gray-900 mt-1">Rp {{ number_format($myTotalShare, 0, ',', '.') }}</p>
         </div>
     </div>
@@ -41,7 +41,7 @@
     <!-- Expense List -->
     <div class="bg-white rounded-lg shadow overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-200">
-            <h2 class="text-lg font-semibold text-gray-900">Daftar Pengeluaran</h2>
+            <h2 class="text-lg font-semibold text-gray-900">{{ __('Expense List') }}</h2>
         </div>
 
         @if($event->expenses->count() > 0)
@@ -49,12 +49,12 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Keterangan</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dibayar Oleh</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Split Untuk</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Date') }}</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Description') }}</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Paid By') }}</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Amount') }}</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Split For') }}</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Action') }}</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -94,14 +94,14 @@
                                             </div>
                                         @endforeach
                                     </div>
-                                    <div class="text-xs mt-1">{{ $expense->shares->count() }} orang</div>
+                                    <div class="text-xs mt-1">{{ $expense->shares->count() }} {{ __('people') }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="{{ route('rundowns.expenses.edit', ['rundown' => $event->id, 'expense' => $expense->expense_id]) }}" class="text-indigo-600 hover:text-indigo-900 mr-2">Edit</a>
+                                    <a href="{{ route('rundowns.expenses.edit', ['rundown' => $event->id, 'expense' => $expense->expense_id]) }}" class="text-indigo-600 hover:text-indigo-900 mr-2">{{ __('Edit') }}</a>
                                     <form action="{{ route('rundowns.expenses.destroy', ['rundown' => $event->id, 'expense' => $expense->expense_id]) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Apakah Anda yakin ingin menghapus pengeluaran ini?')">Hapus</button>
+                                        <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('{{ __('Are you sure you want to delete this expense?') }}')">{{ __('Delete') }}</button>
                                     </form>
                                 </td>
                             </tr>
@@ -114,11 +114,11 @@
                 <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada data pengeluaran</h3>
-                <p class="mt-1 text-sm text-gray-500">Mulai catat pengeluaran untuk event ini.</p>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">{{ __('No expenses yet') }}</h3>
+                <p class="mt-1 text-sm text-gray-500">{{ __('Start tracking expenses for this event.') }}</p>
                 <div class="mt-6">
                     <a href="{{ route('rundowns.expenses.create', $event->id) }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                        Tambah Pengeluaran Baru
+                        {{ __('Add New Expense') }}
                     </a>
                 </div>
             </div>
