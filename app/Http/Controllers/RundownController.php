@@ -16,7 +16,12 @@ class RundownController extends Controller
     {
         $userId = Auth::id();
         
-        $rundowns = Event::where('creator_id', $userId)
+        $rundowns = Event::where(function($query) use ($userId) {
+                $query->where('creator_id', $userId)
+                      ->orWhereHas('participants', function($q) use ($userId) {
+                          $q->where('user_id', $userId);
+                      });
+            })
             ->whereIn('status', [
                 Event::STATUS_DRAFT, 
                 Event::STATUS_PLANNED, 
@@ -28,10 +33,18 @@ class RundownController extends Controller
             ->paginate(10);
         
         $stats = [
-            'total' => Event::where('creator_id', $userId)->count(),
-            'published' => Event::where('creator_id', $userId)->where('status', Event::STATUS_PUBLISHED)->count(),
-            'completed' => Event::where('creator_id', $userId)->where('status', Event::STATUS_COMPLETED)->count(),
-            'today' => Event::where('creator_id', $userId)->whereDate('event_date', today())->count(),
+            'total' => Event::where(function($q) use ($userId) {
+                $q->where('creator_id', $userId)->orWhereHas('participants', fn($p) => $p->where('user_id', $userId));
+            })->count(),
+            'published' => Event::where(function($q) use ($userId) {
+                $q->where('creator_id', $userId)->orWhereHas('participants', fn($p) => $p->where('user_id', $userId));
+            })->where('status', Event::STATUS_PUBLISHED)->count(),
+            'completed' => Event::where(function($q) use ($userId) {
+                $q->where('creator_id', $userId)->orWhereHas('participants', fn($p) => $p->where('user_id', $userId));
+            })->where('status', Event::STATUS_COMPLETED)->count(),
+            'today' => Event::where(function($q) use ($userId) {
+                $q->where('creator_id', $userId)->orWhereHas('participants', fn($p) => $p->where('user_id', $userId));
+            })->whereDate('event_date', today())->count(),
         ];
 
         return view('rundowns.index', compact('rundowns', 'stats'));

@@ -85,6 +85,10 @@ Route::middleware('auth')->group(function () {
         Route::get('activities/create', [ActivityController::class, 'create'])->name('activities.create');
         Route::post('activities', [ActivityController::class, 'store'])->name('activities.store');
         
+        // Participant Routes
+        Route::post('participants', [\App\Http\Controllers\EventParticipantController::class, 'store'])->name('participants.store');
+        Route::delete('participants/{participant}', [\App\Http\Controllers\EventParticipantController::class, 'destroy'])->name('participants.destroy');
+
         // Expense Routes
         Route::get('expenses', [ExpenseController::class, 'index'])->name('expenses.index');
         Route::get('expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
