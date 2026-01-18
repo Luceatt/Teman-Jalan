@@ -193,8 +193,9 @@ class RundownController extends Controller
                     'user_id' => $userId,
                     'place_id' => $placeId,
                 ]);
-                
-                $visit->visit_count = ($visit->visit_count ?? 0) + 1;
+
+                // Ensure visit_count is an integer
+                $visit->visit_count = (int) ($visit->visit_count ?? 0) + 1;
                 $visit->last_visit_date = $rundown->event_date;
                 $visit->save();
             }
