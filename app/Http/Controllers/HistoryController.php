@@ -64,9 +64,12 @@ class HistoryController extends Controller
         // Ambil place_id yang pernah dikunjungi user dari event completed
         $visitedPlaceIds = DB::table('activities')
             ->join('events', 'activities.event_id', '=', 'events.event_id')
-            ->join('event_participants', 'events.event_id', '=', 'event_participants.event_id')
-            ->where('event_participants.user_id', $userId)
+            ->leftJoin('event_participants', 'events.event_id', '=', 'event_participants.event_id')
             ->where('events.status', 'completed')
+            ->where(function($q) use ($userId) {
+                $q->where('events.creator_id', $userId)
+                  ->orWhere('event_participants.user_id', $userId);
+            })
             ->whereNotNull('activities.place_id')
             ->distinct()
             ->pluck('activities.place_id');
@@ -86,8 +89,11 @@ class HistoryController extends Controller
 
                 $activities = DB::table('activities')
                     ->join('events', 'activities.event_id', '=', 'events.event_id')
-                    ->join('event_participants', 'events.event_id', '=', 'event_participants.event_id')
-                    ->where('event_participants.user_id', $userId)
+                    ->leftJoin('event_participants', 'events.event_id', '=', 'event_participants.event_id')
+                    ->where(function($q) use ($userId) {
+                        $q->where('events.creator_id', $userId)
+                          ->orWhere('event_participants.user_id', $userId);
+                    })
                     ->where('events.status', 'completed')
                     ->where('activities.place_id', $place->place_id)
                     ->distinct()

@@ -19,18 +19,24 @@ class PlaceHistoryController extends Controller
         // Hitung total visit ke place ini oleh user
         $totalVisits = DB::table('activities')
             ->join('events', 'activities.event_id', '=', 'events.event_id')
-            ->join('event_participants', 'events.event_id', '=', 'event_participants.event_id')
+            ->leftJoin('event_participants', 'events.event_id', '=', 'event_participants.event_id')
             ->where('activities.place_id', $placeId)
-            ->where('event_participants.user_id', $userId)
+            ->where(function($q) use ($userId) {
+                $q->where('events.creator_id', $userId)
+                  ->orWhere('event_participants.user_id', $userId);
+            })
             ->distinct('events.event_id')
             ->count('events.event_id');
        
         // Ambil semua events yang memiliki activities di place ini
         $events = DB::table('activities')
             ->join('events', 'activities.event_id', '=', 'events.event_id')
-            ->join('event_participants', 'events.event_id', '=', 'event_participants.event_id')
+            ->leftJoin('event_participants', 'events.event_id', '=', 'event_participants.event_id')
             ->where('activities.place_id', $placeId)
-            ->where('event_participants.user_id', $userId)
+            ->where(function($q) use ($userId) {
+                $q->where('events.creator_id', $userId)
+                  ->orWhere('event_participants.user_id', $userId);
+            })
             ->select(
                 'events.event_id',
                 'events.event_name as event_name',
