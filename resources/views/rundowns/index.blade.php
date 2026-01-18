@@ -3,7 +3,14 @@
 @section('title', 'Rundown Management')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
+<div x-data="{
+    completeModal: false,
+    publishModal: false,
+    currentRundown: { id: null, title: '' }
+}"
+@open-complete.window="completeModal = true; currentRundown = $event.detail; document.body.style.overflow = 'hidden';"
+@open-publish.window="publishModal = true; currentRundown = $event.detail; document.body.style.overflow = 'hidden';">
+    <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold text-gray-900">{{ __('Rundown Management') }}</h1>
         <a href="{{ route('rundowns.create') }}"
@@ -144,24 +151,18 @@
                                         <a href="{{ route('rundowns.edit', $rundown->id) }}"
                                            class="text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
                                         @if($rundown->status === 'draft')
-                                            <form action="{{ route('rundowns.publish', $rundown->id) }}" method="POST" class="inline">
-                                                @csrf
-                                                <button type="submit"
-                                                        class="text-green-600 hover:text-green-900"
-                                                        onclick="return confirm('{{ __('Are you sure you want to publish this rundown?') }}')">
-                                                    {{ __('Publish') }}
-                                                </button>
-                                            </form>
+                                            <button @click="$dispatch('open-publish', { id: {{ $rundown->id }}, title: '{{ addslashes($rundown->title) }}' })"
+                                                    type="button"
+                                                    class="text-green-600 hover:text-green-900">
+                                                {{ __('Publish') }}
+                                            </button>
                                         @endif
                                         @if($rundown->status === 'published')
-                                            <form action="{{ route('rundowns.complete', $rundown->id) }}" method="POST" class="inline">
-                                                @csrf
-                                                <button type="submit"
-                                                        class="text-purple-600 hover:text-purple-900"
-                                                        onclick="return confirm('{{ __('Are you sure this rundown is complete?') }}')">
-                                                    {{ __('Completed') }}
-                                                </button>
-                                            </form>
+                                            <button @click="$dispatch('open-complete', { id: {{ $rundown->id }}, title: '{{ addslashes($rundown->title) }}' })"
+                                                    type="button"
+                                                    class="text-purple-600 hover:text-purple-900">
+                                                {{ __('Complete') }}
+                                            </button>
                                         @endif
                                         <form action="{{ route('rundowns.destroy', $rundown->id) }}" method="POST" class="inline">
                                             @csrf
@@ -201,4 +202,164 @@
         @endif
     </div>
 </div>
+
+<!-- Modals Container -->
+
+
+    <!-- Complete Rundown Modal -->
+    <div x-show="completeModal"
+         @keydown.escape.window="completeModal = false; document.body.style.overflow = '';"
+         x-cloak
+         class="fixed inset-0 z-50 overflow-y-auto"
+         aria-labelledby="complete-modal-title"
+         role="dialog"
+         aria-modal="true">
+        
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div x-show="completeModal"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                 @click="completeModal = false; document.body.style.overflow = '';"
+                 aria-hidden="true"></div>
+
+            <!-- This element is to trick the browser into centering the modal contents. -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div x-show="completeModal"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 class="relative inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                
+                <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-purple-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <svg class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="complete-modal-title">
+                            {{ __('Complete Rundown') }}?
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500">
+                                {{ __('Are you sure this rundown') }} "<span x-text="currentRundown.title" class="font-semibold"></span>" {{ __('is complete') }}?
+                            </p>
+                            <p class="text-sm text-gray-700 mt-2 bg-blue-50 p-3 rounded">
+                                <svg class="w-4 h-4 inline mr-1 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                </svg>
+                                {{ __('This will track all places visited and update friend hangout history.') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                    <form :action="'/rundowns/' + currentRundown.id + '/complete'" method="POST" class="inline">
+                        @csrf
+                        <button type="submit"
+                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-purple-600 text-base font-medium text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:ml-3 sm:w-auto sm:text-sm">
+                            {{ __('Yes, Mark as Complete') }}
+                        </button>
+                    </form>
+                    <button type="button"
+                            @click="completeModal = false; document.body.style.overflow = '';"
+                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">
+                        {{ __('Cancel') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Publish Rundown Modal -->
+    <div x-show="publishModal"
+         @keydown.escape.window="publishModal = false; document.body.style.overflow = '';"
+         x-cloak
+         class="fixed inset-0 z-50 overflow-y-auto"
+         aria-labelledby="publish-modal-title"
+         role="dialog"
+         aria-modal="true">
+        
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div x-show="publishModal"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                 @click="publishModal = false; document.body.style.overflow = '';"
+                 aria-hidden="true"></div>
+
+            <!-- This element is to trick the browser into centering the modal contents. -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div x-show="publishModal"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 class="relative inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                
+                <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="publish-modal-title">
+                            {{ __('Publish Rundown') }}?
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500">
+                                {{ __('Are you sure you want to publish') }} "<span x-text="currentRundown.title" class="font-semibold"></span>"?
+                            </p>
+                            <p class="text-sm text-gray-700 mt-2 bg-green-50 p-3 rounded">
+                                <svg class="w-4 h-4 inline mr-1 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                </svg>
+                                {{ __('Published rundowns will be visible to participants and can be marked as complete later.') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                    <form :action="'/rundowns/' + currentRundown.id + '/publish'" method="POST" class="inline">
+                        @csrf
+                        <button type="submit"
+                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
+                            {{ __('Yes, Publish Now') }}
+                        </button>
+                    </form>
+                    <button type="button"
+                            @click="publishModal = false; document.body.style.overflow = '';"
+                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">
+                        {{ __('Cancel') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    [x-cloak] { display: none !important; }
+</style>
 @endsection

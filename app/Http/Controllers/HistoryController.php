@@ -15,20 +15,25 @@ class HistoryController extends Controller
 
         // TAB EVENTS
         $events = Event::with([
-            'participants.user:id,name,profile_picture_url'
+            'participants.user:id,name,profile_picture_url',
+            'activities.place'
         ])
-        ->whereHas('participants', function ($q) use ($userId) {
-            $q->where('user_id', $userId);
+        ->where(function($q) use ($userId) {
+            $q->where('creator_id', $userId)
+              ->orWhereHas('participants', function($p) use ($userId) {
+                  $p->where('user_id', $userId);
+              });
         })
-        ->where('status', 'completed')
+        ->where('status', Event::STATUS_COMPLETED)
         ->withSum('expenses', 'amount')
+        ->orderBy('event_date', 'desc')
         ->get()
         ->map(function ($event) use ($userId) {
-            $placesVisited = DB::table('activities')
-                ->where('event_id', $event->event_id)
+            $placesVisited = $event->activities
                 ->whereNotNull('place_id')
-                ->distinct('place_id')
-                ->count('place_id');
+                ->pluck('place_id')
+                ->unique()
+                ->count();
 
             // Hitung total pengeluaran user untuk event ini (bukan total event)
             $userSpent = DB::table('expense_shares')

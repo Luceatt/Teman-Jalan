@@ -62,7 +62,7 @@ class ActivityController extends Controller
 
         return redirect()
             ->route('rundowns.show', $rundownId)
-            ->with('success', 'Aktivitas berhasil ditambahkan!');
+            ->with('success', __('Activity added successfully!'));
     }
 
     /**
@@ -115,7 +115,7 @@ class ActivityController extends Controller
 
         return redirect()
             ->route('rundowns.show', $activity->event_id)
-            ->with('success', 'Aktivitas berhasil diperbarui!');
+            ->with('success', __('Activity updated successfully!'));
     }
 
     /**
@@ -129,7 +129,7 @@ class ActivityController extends Controller
 
         return redirect()
             ->route('rundowns.show', $rundownId)
-            ->with('success', 'Aktivitas berhasil dihapus!');
+            ->with('success', __('Activity deleted successfully!'));
     }
 
     /**

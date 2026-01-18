@@ -99,8 +99,6 @@
                                class="text-blue-600 hover:text-blue-800 text-sm font-medium">{{ __('View') }}</a>
                             <a href="{{ route('places.edit', $place->id) }}"
                                class="text-green-600 hover:text-green-800 text-sm font-medium">{{ __('Edit') }}</a>
-                            <button onclick="deletePlace({{ $place->id }})"
-                                    class="text-red-600 hover:text-red-800 text-sm font-medium">{{ __('Delete') }}</button>
                         </div>
                     </div>
                 </div>
