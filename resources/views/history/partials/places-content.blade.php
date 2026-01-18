@@ -6,7 +6,7 @@
                     <div class="flex-1 flex flex-row gap-5 items-stretch">
                         <img src="{{ $place['image_url'] }}" alt="{{ $place['name'] }}" 
                              class="w-28 h-28 object-cover rounded-lg shadow-sm flex-shrink-0">
-                        <div class="flex-1 flex flex-col justify-between">
+                        <div class="flex-1 flex flex-col justify-between text-left">
                             <h3 class="text-lg font-semibold m-0 text-gray-800">{{ $place['name'] }}</h3>
                             <p class="text-sm text-gray-600 mt-1.5 mb-0">{{ $place['address'] }}</p>
                             <div class="m-0">

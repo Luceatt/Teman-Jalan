@@ -171,56 +171,63 @@ class RundownController extends Controller
     public function complete($id)
     {
         $rundown = Event::where('event_id', $id)->with(['activities', 'participants'])->firstOrFail();
-        $rundown->update(['status' => Event::STATUS_COMPLETED]);
 
-        // Track place visits for all participants
-        $placeIds = $rundown->activities()
-            ->whereNotNull('place_id')
-            ->distinct()
-            ->pluck('place_id');
-
-        $participantIds = $rundown->participants()->pluck('user_id')->toArray();
-        
-        // Add creator to participants if not already included
-        if (!in_array($rundown->creator_id, $participantIds)) {
-            $participantIds[] = $rundown->creator_id;
-        }
-
-        // Update UserPlaceVisit for each participant and place combination
-        foreach ($participantIds as $userId) {
-            foreach ($placeIds as $placeId) {
-                $visit = \App\Models\UserPlaceVisit::firstOrNew([
-                    'user_id' => $userId,
-                    'place_id' => $placeId,
-                ]);
-
-                // Ensure visit_count is an integer
-                $visit->visit_count = (int) ($visit->visit_count ?? 0) + 1;
-                $visit->last_visit_date = $rundown->event_date;
-                $visit->save();
+        \Illuminate\Support\Facades\DB::transaction(function () use ($rundown) {
+            $rundown->update(['status' => Event::STATUS_COMPLETED]);
+    
+            // Track place visits for all participants
+            // Get all place IDs from activities
+            $placeIds = $rundown->activities()
+                ->whereNotNull('place_id')
+                ->distinct()
+                ->pluck('place_id');
+    
+            // Get all participant IDs including creator
+            $participantIds = $rundown->participants()->pluck('user_id')->toArray();
+            if (!in_array($rundown->creator_id, $participantIds)) {
+                $participantIds[] = $rundown->creator_id;
             }
-        }
-
-        // Update times_together for all friendship combinations
-        if (count($participantIds) > 1) {
-            for ($i = 0; $i < count($participantIds); $i++) {
-                for ($j = $i + 1; $j < count($participantIds); $j++) {
-                    $user1 = $participantIds[$i];
-                    $user2 = $participantIds[$j];
-                    
-                    // Find the friendship (bidirectional check)
-                    $friendship = \App\Models\Friendship::where(function($query) use ($user1, $user2) {
-                        $query->where('user_id', $user1)->where('friend_id', $user2);
-                    })->orWhere(function($query) use ($user1, $user2) {
-                        $query->where('user_id', $user2)->where('friend_id', $user1);
-                    })->where('status', \App\Models\Friendship::STATUS_ACCEPTED)->first();
-                    
-                    if ($friendship) {
-                        $friendship->increment('times_together');
+            $participantIds = array_unique($participantIds);
+            
+            // Update UserPlaceVisit for each participant and place combination
+            foreach ($participantIds as $userId) {
+                foreach ($placeIds as $placeId) {
+                    $visit = \App\Models\UserPlaceVisit::firstOrNew([
+                        'user_id' => $userId,
+                        'place_id' => $placeId,
+                    ]);
+    
+                    // Ensure visit_count is an integer and increment
+                    $visit->visit_count = (int) ($visit->visit_count ?? 0) + 1;
+                    $visit->last_visit_date = $rundown->event_date;
+                    $visit->save();
+                }
+            }
+    
+            // Update times_together for all friendship combinations
+            if (count($participantIds) > 1) {
+                // Re-index array to ensure 0-based indexing for loop
+                $participantIds = array_values($participantIds);
+                
+                for ($i = 0; $i < count($participantIds); $i++) {
+                    for ($j = $i + 1; $j < count($participantIds); $j++) {
+                        $user1 = $participantIds[$i];
+                        $user2 = $participantIds[$j];
+                        
+                        // Find the friendship (bidirectional check)
+                        $friendship = \App\Models\Friendship::where(function($query) use ($user1, $user2) {
+                            $query->where('user_id', $user1)->where('friend_id', $user2);
+                        })->orWhere(function($query) use ($user1, $user2) {
+                            $query->where('user_id', $user2)->where('friend_id', $user1);
+                        })->where('status', \App\Models\Friendship::STATUS_ACCEPTED)->first();
+                        
+                        if ($friendship) {
+                            $friendship->increment('times_together');
+                        }
                     }
                 }
             }
-        }
+        });
 
         return back()->with('success', __('Rundown completed successfully!'));
     }
